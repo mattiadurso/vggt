@@ -24,7 +24,7 @@
 }
 ```
 ## Changes
-- Create a wrapper to better handle inference (e.g., multiple scenes) and save in COLMAP format.
+- Create a wrapper to better handle inference (e.g., multiple scenes) and save in COLMAP format. Use pycomap==3.11.
 - Stopped carrying intermediate inputs not used by heads. This allows to run VGGT on 150 images instead of ~70 on a 4090.
 
 ## Updates
