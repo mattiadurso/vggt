@@ -80,8 +80,7 @@ image_names = ["path/to/imageA.png", "path/to/imageB.png", "path/to/imageC.png"]
 images = load_and_preprocess_images(image_names).to(device)
 
 with torch.no_grad():
-    with torch.cuda.amp.autocast(dtype=dtype):
-        # Predict attributes including cameras, depth maps, and point maps.
+    with torch.amp.autocast(device_type="cuda",         # Predict attributes including cameras, depth maps, and point maps.
         predictions = model(images)
 ```
 
@@ -105,8 +104,7 @@ from vggt.utils.pose_enc import pose_encoding_to_extri_intri
 from vggt.utils.geometry import unproject_depth_map_to_point_map
 
 with torch.no_grad():
-    with torch.cuda.amp.autocast(dtype=dtype):
-        images = images[None]  # add batch dimension
+    with torch.amp.autocast(device_type="cuda",         images = images[None]  # add batch dimension
         aggregated_tokens_list, ps_idx = model.aggregator(images)
                 
     # Predict Cameras
