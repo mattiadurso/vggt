@@ -656,11 +656,11 @@ if __name__ == "__main__":
 
     # setting paths
     input = "/home/mattia/Desktop/datasets/mydataset/data/salzburg_andrakirche/frames"
-    output = "/home/mattia/Desktop/Repos/vggt/sparse"
+    output = "/home/mattia/Desktop/Repos/vggt/wrapper_output/sparse"
     os.system(f"rm -rf {output}")
 
     # reconstruction
-    rec = vggt.forward(input, output, max_images=15, use_ba=True)
+    rec = vggt.forward(input, output, max_images=150, use_ba=False)
 
     # with VGGT default BA, only n images can be optimized.
     # TODO: use pycolmap BA to optimize this

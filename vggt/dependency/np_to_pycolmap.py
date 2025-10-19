@@ -94,18 +94,15 @@ def batch_np_matrix_to_pycolmap(
         # set camera
         if camera is None or (not shared_camera):
             pycolmap_intri = _build_pycolmap_intri(
-                fidx, intrinsics, camera_type, extra_params
+                fidx, intrinsics, camera_type, extra_params=None
             )
-
             camera = pycolmap.Camera(
+                id=fidx + 1,
                 model=camera_type,
-                width=image_size[0],
-                height=image_size[1],
+                width=int(image_size[0]),
+                height=int(image_size[1]),
                 params=pycolmap_intri,
-                camera_id=fidx + 1,
             )
-
-            # add camera
             reconstruction.add_camera(camera)
 
         # set image
@@ -113,46 +110,42 @@ def batch_np_matrix_to_pycolmap(
             pycolmap.Rotation3d(extrinsics[fidx][:3, :3]), extrinsics[fidx][:3, 3]
         )  # Rot and Trans
 
+        # Create image WITHOUT cam_from_world in constructor
         image = pycolmap.Image(
             id=fidx + 1,
             name=f"image_{fidx + 1}",
             camera_id=camera.camera_id,
-            cam_from_world=cam_from_world,
         )
 
-        points2D_list = []
+        # Set cam_from_world AFTER creating the image
+        image.cam_from_world = cam_from_world
 
+        points2D_list = []
         point2D_idx = 0
 
-        # NOTE point3D_id start by 1
-        for point3D_id in range(1, num_points3D + 1):
-            original_track_idx = valid_idx[point3D_id - 1]
+        # Iterate through valid 3D points and check if they're visible in this frame
+        for vidx in valid_idx:
+            if masks[fidx, vidx]:  # Check if this point is visible in this frame
+                point3D_id = vidx + 1
+                point2D_xy = tracks[fidx, vidx]
+                points2D_list.append(pycolmap.Point2D(point2D_xy, point3D_id))
 
-            if (reconstruction.points3D[point3D_id].xyz < max_points3D_val).all():
-                if masks[fidx][original_track_idx]:
-                    # It seems we don't need +0.5 for BA
-                    point2D_xy = tracks[fidx][original_track_idx]
-                    # Please note when adding the Point2D object
-                    # It not only requires the 2D xy location, but also the id to 3D point
-                    points2D_list.append(pycolmap.Point2D(point2D_xy, point3D_id))
-
-                    # add element
-                    track = reconstruction.points3D[point3D_id].track
-                    track.add_element(fidx + 1, point2D_idx)
-                    point2D_idx += 1
+                # add element
+                track = reconstruction.points3D[point3D_id].track
+                track.add_element(fidx + 1, point2D_idx)
+                point2D_idx += 1
 
         assert point2D_idx == len(points2D_list)
 
         try:
             image.points2D = pycolmap.ListPoint2D(points2D_list)
-
         except:
-            print(f"frame {fidx + 1} is out of BA")
+            image.registered = False
 
         # add image
         reconstruction.add_image(image)
 
-    return reconstruction, valid_mask
+    return reconstruction
 
 
 def pycolmap_to_batch_np_matrix(

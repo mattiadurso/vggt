@@ -23,6 +23,9 @@
   year={2025}
 }
 ```
+## Changes
+- Create a wrapper to better handle inference (e.g., multiple scenes) and save in COLMAP format.
+- Stopped carrying intermediate inputs not used by heads. This allows to run VGGT on 150 images instead of ~70 on a 4090.
 
 ## Updates
 
