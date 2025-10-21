@@ -678,7 +678,7 @@ if __name__ == "__main__":
     # add dataset scene, and use-ba as arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=str, default="eth3d")
-    parser.add_argument("--scene", type=str, default="electro")
+    parser.add_argument("--scene", type=str, default="door")
 
     parser.add_argument("--max-images", type=int, default=150)
     parser.add_argument("--use-ba", action="store_true")
@@ -708,7 +708,9 @@ if __name__ == "__main__":
 
     else:
         base_path = "/home/mattia/Desktop/Repos"
-        input = f"{base_path}/wrapper_factory/benchmarks_3D/eth3d/electro/images_by_k"
+        input = (
+            f"{base_path}/wrapper_factory/benchmarks_3D/eth3d/{args.scene}/images_by_k"
+        )
         output = f"{base_path}/vggt/wrapper_output/sparse"
 
     # reconstruction

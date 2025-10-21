@@ -14,8 +14,8 @@ for scene in scenes:
     os.makedirs(output, exist_ok=True)
 
     # reconstruction
-    rec = vggt.forward(input, output, max_images=150, use_ba=False)
-    rec = vggt.forward(input, output, max_images=150, use_ba=True)
+    # rec = vggt.forward(input, output, max_images=150, use_ba=False)
+    rec = vggt.forward(input, output, max_images=-1, use_ba=True)
 
 
 dataset = "eth3d"
@@ -27,5 +27,5 @@ for scene in scenes:
     os.makedirs(output, exist_ok=True)
 
     # reconstruction
-    rec = vggt.forward(input, output, max_images=150, use_ba=False)
-    rec = vggt.forward(input, output, max_images=150, use_ba=True)
+    # rec = vggt.forward(input, output, max_images=150, use_ba=False)
+    rec = vggt.forward(input, output, max_images=-1, use_ba=True)
