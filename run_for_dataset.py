@@ -14,6 +14,7 @@ for scene in scenes:
     os.makedirs(output, exist_ok=True)
 
     # reconstruction
+    rec = vggt.forward(input, output, max_images=150, use_ba=False)
     rec = vggt.forward(input, output, max_images=150, use_ba=True)
 
 
@@ -26,4 +27,5 @@ for scene in scenes:
     os.makedirs(output, exist_ok=True)
 
     # reconstruction
+    rec = vggt.forward(input, output, max_images=150, use_ba=False)
     rec = vggt.forward(input, output, max_images=150, use_ba=True)
