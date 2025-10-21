@@ -675,9 +675,16 @@ if __name__ == "__main__":
     vggt = VGGTWrapper()
 
     # setting paths
-    input = "/home/mattia/Desktop/Repos/wrapper_factory/benchmarks_3D/eth3d/electro/images_by_k"
-    output = "/home/mattia/Desktop/Repos/vggt/wrapper_output/sparse"
-    os.system(f"rm -rf {output}")
+    base_path = "/data/mdurso"
+    if os.path.exists(base_path):
+        input = f"{base_path}/eth3d/electro/images_by_k"
+        output = f"{base_path}/results/vggt/eth3d/sparse"
+        os.makedirs(output, exist_ok=True)
+
+    else:
+        base_path = "/home/mattia/Desktop/Repos"
+        input = f"{base_path}/wrapper_factory/benchmarks_3D/eth3d/electro/images_by_k"
+        output = f"{base_path}/vggt/wrapper_output/sparse"
 
     # reconstruction
     rec = vggt.forward(input, output, max_images=150, use_ba=True)
