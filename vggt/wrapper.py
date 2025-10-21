@@ -670,6 +670,16 @@ class VGGTWrapper:
 
 
 if __name__ == "__main__":
+    import argparse
+
+    # add dataset scene, and use-ba as arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", type=str, default="eth3d")
+    parser.add_argument("--scene", type=str, default="electro")
+    parser.add_argument("--max-images", type=int, default=150)
+    parser.add_argument("--use-ba", action="store_true")
+    args = parser.parse_args()
+
     from vggt.wrapper import VGGTWrapper
 
     vggt = VGGTWrapper()
@@ -677,8 +687,12 @@ if __name__ == "__main__":
     # setting paths
     base_path = "/data/mdurso"
     if os.path.exists(base_path):
-        input = f"{base_path}/eth3d/electro/images_by_k"
-        output = f"{base_path}/results/vggt/eth3d/sparse"
+        if args.dataset == "eth3d":
+            input = f"{base_path}/eth3d/electro/images_by_k"
+            output = f"{base_path}/results/vggt/eth3d/sparse"
+        elif args.dataset == "imc":
+            input = f"{base_path}/imc/dataset/{args.scene}/images"
+            output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
         os.makedirs(output, exist_ok=True)
 
     else:
