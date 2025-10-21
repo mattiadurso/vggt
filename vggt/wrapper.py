@@ -29,6 +29,7 @@ class VGGTWrapper:
 
     def __init__(
         self,
+        cuda_id: int = 0,
         seed: int = 42,
         model_url: str = "https://huggingface.co/facebook/VGGT-1B/resolve/main/model.pt",
     ):
@@ -44,7 +45,9 @@ class VGGTWrapper:
         self._set_seed(seed)
 
         # Setup device and dtype
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(
+            f"cuda:{cuda_id}" if torch.cuda.is_available() else "cpu"
+        )
 
         self.dtype = (
             torch.bfloat16
@@ -678,20 +681,22 @@ if __name__ == "__main__":
     parser.add_argument("--scene", type=str, default="electro")
     parser.add_argument("--max-images", type=int, default=150)
     parser.add_argument("--use-ba", action="store_true")
+    parser.add_argument("--cuda-id", type=int, default=0)
     args = parser.parse_args()
 
     from vggt.wrapper import VGGTWrapper
 
-    vggt = VGGTWrapper()
+    vggt = VGGTWrapper(cuda_id=args.cuda_id)
 
     # setting paths
     base_path = "/data/mdurso"
     if os.path.exists(base_path):
         if args.dataset == "eth3d":
-            input = f"{base_path}/eth3d/electro/images_by_k"
-            output = f"{base_path}/results/vggt/eth3d/sparse"
+            input = f"{base_path}/eth3d/{args.scene}/images_by_k"
+            output = f"{base_path}/results/vggt/eth3d/{args.scene}/sparse"
+
         elif args.dataset == "imc":
-            input = f"{base_path}/imc/dataset/{args.scene}/images"
+            input = f"{base_path}/imc/{args.scene}/set_100/images"
             output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
         os.makedirs(output, exist_ok=True)
 
