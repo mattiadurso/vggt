@@ -19,7 +19,8 @@ torch.backends.cudnn.deterministic = False
 
 import argparse
 from pathlib import Path
-import trimesh
+
+# import trimesh
 import pycolmap
 
 
@@ -236,7 +237,6 @@ def demo_fn(args):
         intrinsic[:, :2, :] *= scale
         track_mask = pred_vis_scores > args.vis_thresh
 
-        # TODO: radial distortion, iterative BA, masks
         reconstruction, valid_track_mask = batch_np_matrix_to_pycolmap(
             points_3d,
             extrinsic,

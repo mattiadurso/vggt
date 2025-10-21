@@ -81,11 +81,15 @@ def batch_np_matrix_to_pycolmap(
     valid_mask = inlier_num >= 2  # a track is invalid if without two inliers
     valid_idx = np.nonzero(valid_mask)[0]
 
+    # Track the mapping from valid_idx to point3D_id
+    vidx_to_point3D_id = {}
+
     # Only add 3D points that have sufficient 2D points
     for vidx in valid_idx:
         # Use RGB colors if provided, otherwise use zeros
         rgb = points_rgb[vidx] if points_rgb is not None else np.zeros(3)
-        reconstruction.add_point3D(points3d[vidx], pycolmap.Track(), rgb)
+        point3D_id = reconstruction.add_point3D(points3d[vidx], pycolmap.Track(), rgb)
+        vidx_to_point3D_id[vidx] = point3D_id
 
     num_points3D = len(valid_idx)
     camera = None
@@ -97,7 +101,7 @@ def batch_np_matrix_to_pycolmap(
                 fidx, intrinsics, camera_type, extra_params=None
             )
             camera = pycolmap.Camera(
-                id=fidx + 1,
+                camera_id=fidx + 1,
                 model=camera_type,
                 width=int(image_size[0]),
                 height=int(image_size[1]),
@@ -112,7 +116,7 @@ def batch_np_matrix_to_pycolmap(
 
         # Create image WITHOUT cam_from_world in constructor
         image = pycolmap.Image(
-            id=fidx + 1,
+            image_id=fidx + 1,  # Changed from id= to image_id=
             name=f"image_{fidx + 1}",
             camera_id=camera.camera_id,
         )
@@ -126,7 +130,7 @@ def batch_np_matrix_to_pycolmap(
         # Iterate through valid 3D points and check if they're visible in this frame
         for vidx in valid_idx:
             if masks[fidx, vidx]:  # Check if this point is visible in this frame
-                point3D_id = vidx + 1
+                point3D_id = vidx_to_point3D_id[vidx]  # Use the actual assigned ID
                 point2D_xy = tracks[fidx, vidx]
                 points2D_list.append(pycolmap.Point2D(point2D_xy, point3D_id))
 
@@ -145,7 +149,7 @@ def batch_np_matrix_to_pycolmap(
         # add image
         reconstruction.add_image(image)
 
-    return reconstruction
+    return reconstruction, valid_mask  # Return valid_mask as well
 
 
 def pycolmap_to_batch_np_matrix(

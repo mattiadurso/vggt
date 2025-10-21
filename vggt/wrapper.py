@@ -1,4 +1,5 @@
 import os
+import gc
 import glob
 import random
 import numpy as np
@@ -180,6 +181,7 @@ class VGGTWrapper:
 
         return extrinsic, intrinsic, depth_map, depth_conf
 
+    @torch.no_grad()
     def _reconstruct_with_ba(
         self,
         images: torch.Tensor,
@@ -201,6 +203,13 @@ class VGGTWrapper:
         scale = self.img_load_resolution / self.vggt_fixed_resolution
 
         with torch.amp.autocast(device_type="cuda", dtype=self.dtype):
+            # Predicting Tracks
+            # Using VGGSfM tracker instead of VGGT tracker for efficiency
+            # VGGT tracker requires multiple backbone runs to query different frames (this is a problem caused by the training process)
+            # Will be fixed in VGGT v2
+
+            # You can also change the pred_tracks to tracks from any other methods
+            # e.g., from COLMAP, from CoTracker, or by chaining 2D matches from Lightglue/LoFTR.
             pred_tracks, pred_vis_scores, pred_confs, points_3d, points_rgb = (
                 predict_tracks(
                     images,
@@ -213,12 +222,14 @@ class VGGTWrapper:
                     fine_tracking=fine_tracking,
                 )
             )
+
             torch.cuda.empty_cache()
 
-        # Rescale intrinsic matrix
+        # rescale the intrinsic matrix from 518 to 1024
         intrinsic[:, :2, :] *= scale
         track_mask = pred_vis_scores > vis_thresh
 
+        # TODO: radial distortion, iterative BA, masks
         reconstruction, valid_track_mask = batch_np_matrix_to_pycolmap(
             points_3d,
             extrinsic,
@@ -235,11 +246,13 @@ class VGGTWrapper:
         if reconstruction is None:
             raise ValueError("No reconstruction can be built with BA")
 
-        # Bundle adjustment
+        # Bundle Adjustment
         ba_options = pycolmap.BundleAdjustmentOptions()
         pycolmap.bundle_adjustment(reconstruction, ba_options)
 
-        return reconstruction, self.img_load_resolution
+        reconstruction_resolution = self.img_load_resolution
+
+        return reconstruction, reconstruction_resolution
 
     def _reconstruct_without_ba(
         self,
@@ -336,7 +349,8 @@ class VGGTWrapper:
         output_sparse_path: str,
         clear_points: bool = True,
         refine_intrinsics: bool = False,
-        ba_iterations: int = 0,
+        use_ba: bool = False,
+        verbose: bool = False,
     ):
         """
         Triangulate 3D points using COLMAP's feature extraction, matching, and triangulation.
@@ -358,11 +372,15 @@ class VGGTWrapper:
             refine_intrinsics: Whether to refine camera intrinsics during BA.
             ba_iterations: Number of bundle adjustment iterations (0 = skip BA).
         """
+        verbose = "" if verbose else " > /dev/null 2>&1"
         # add sparse to input and output paths if not present
         if not input_sparse_path.endswith("sparse"):
             input_sparse_path = os.path.join(input_sparse_path, "sparse")
         if not output_sparse_path.endswith("sparse"):
             output_sparse_path = os.path.join(output_sparse_path, "sparse")
+        output_sparse_path = (
+            output_sparse_path + "_ba" if use_ba else output_sparse_path
+        )
         print(f"Triangulating points with COLMAP...")
         print(f"  Images path: {images_path}")
         print(f"  Input sparse: {input_sparse_path}")
@@ -376,49 +394,54 @@ class VGGTWrapper:
         os.makedirs(work_dir, exist_ok=True)
         database_path = work_dir / "database.db"
 
-        # Create temporary directory to move images one at a time
-        temp_path = work_dir / "temp"
-        os.makedirs(temp_path, exist_ok=True)
+        if database_path.exists():
+            print("Using existing COLMAP database...")
+        else:
+            # Create temporary directory to move images one at a time
+            temp_path = work_dir / "temp"
+            os.makedirs(temp_path, exist_ok=True)
 
-        # Move all images to temp directory first
-        print("Moving images to temporary directory...")
-        os.system(f"cp -r {images_path}/* {temp_path}")
+            # Move all images to temp directory first
+            print("Moving images to temporary directory...")
+            os.system(f"cp -r {images_path}/* {temp_path}")
 
-        # Process each image individually with COLMAP feature extraction
-        print("Extracting features for each image...")
-        for pyimage in tqdm(
-            sorted(reconstruction.images.values(), key=lambda x: x.image_id),
-            desc="Extracting features",
-        ):
-            image_name = pyimage.name
-            camera = reconstruction.cameras[pyimage.camera_id]
+            # Process each image individually with COLMAP feature extraction
+            print("Extracting features for each image...")
+            for pyimage in tqdm(
+                sorted(reconstruction.images.values(), key=lambda x: x.image_id),
+                desc="Extracting features",
+            ):
+                image_name = pyimage.name
+                camera = reconstruction.cameras[pyimage.camera_id]
 
-            # Move image back temporarily
-            temp_image_path = f"{temp_path}/{image_name}"
-            final_image_path = work_dir / "frames" / image_name
+                # Move image back temporarily
+                temp_image_path = f"{temp_path}/{image_name}"
+                final_image_path = work_dir / "frames" / image_name
 
-            # Create subdirectories if needed
-            os.makedirs(os.path.dirname(final_image_path), exist_ok=True)
-            os.system(f"mv {temp_image_path} {final_image_path}")
+                # Create subdirectories if needed
+                os.makedirs(os.path.dirname(final_image_path), exist_ok=True)
+                os.system(f"mv {temp_image_path} {final_image_path}")
 
-            # Get camera parameters
-            camera_model = camera.model.name
-            params = [str(p) for p in camera.params]
+                # Get camera parameters
+                camera_model = camera.model.name
+                params = [str(p) for p in camera.params]
 
-            # Run COLMAP feature extraction for this image
-            cmd = (
-                f"colmap feature_extractor "
-                f"--database_path {database_path} "
-                f"--image_path {work_dir / 'frames'} "
-                f"--ImageReader.camera_model {camera_model} "
-                f'--ImageReader.camera_params "{",".join(params)}"'
-            )
-            os.system(cmd + " > /dev/null 2>&1")
+                # Run COLMAP feature extraction for this image
+                cmd = (
+                    f"colmap feature_extractor "
+                    f"--database_path {database_path} "
+                    f"--image_path {work_dir / 'frames'} "
+                    f"--ImageReader.camera_model {camera_model} "
+                    f'--ImageReader.camera_params "{",".join(params)}"'
+                )
+                os.system(cmd + verbose)
+                # os.system(cmd + verbose)
 
-        # Match features
-        print("Matching features...")
-        match_cmd = f"colmap exhaustive_matcher --database_path {database_path}"
-        os.system(match_cmd + " > /dev/null 2>&1")
+            # Match features
+            print("Matching features...")
+            match_cmd = f"colmap exhaustive_matcher --database_path {database_path}"
+            os.system(match_cmd + verbose)
+            # os.system(match_cmd + verbose)
 
         os.makedirs(output_sparse_path, exist_ok=True)
         triangulate_cmd = (
@@ -431,31 +454,36 @@ class VGGTWrapper:
             f"--refine_intrinsics {1 if refine_intrinsics else 0} "
         )
 
-        # Add BA parameters if iterations > 0 | doesnt seem to work properly
-        if ba_iterations > 0:
-            triangulate_cmd += (
-                f"--Mapper.ba_local_max_num_iterations {ba_iterations} "
-                f"--Mapper.ba_global_max_num_iterations {ba_iterations} "
-            )
-        else:
-            # Disable BA
-            triangulate_cmd += (
-                "--Mapper.ba_refine_focal_length 0 "
-                "--Mapper.ba_refine_extra_params 0 "
-                "--Mapper.ba_refine_principal_point 0 "
-                "--Mapper.ba_local_max_num_iterations 1 "
-                "--Mapper.ba_global_max_num_iterations 1 "
-                "--Mapper.ba_global_function_tolerance 1.0 "
-                "--Mapper.ba_local_function_tolerance 1.0 "
-            )
+        triangulate_cmd += (
+            "--Mapper.ba_refine_focal_length 0 "
+            "--Mapper.ba_refine_extra_params 0 "
+            "--Mapper.ba_refine_principal_point 0 "
+            "--Mapper.ba_local_max_num_iterations 1 "
+            "--Mapper.ba_global_max_num_iterations 1 "
+            "--Mapper.ba_global_function_tolerance 1.0 "
+            "--Mapper.ba_local_function_tolerance 1.0 "
+        )
 
         print("Triangulating points...")
-        os.system(triangulate_cmd + " > /dev/null 2>&1")
+        os.system(triangulate_cmd + verbose)
+
+        if use_ba:
+            print("Running bundle adjustment...")
+            ba_cmd = (
+                f"colmap bundle_adjuster "
+                f"--input_path {output_sparse_path} "
+                f"--output_path {output_sparse_path} "
+                f"--BundleAdjustment.max_num_iterations 1024 "
+                f"--BundleAdjustment.refine_focal_length 1 "
+                f"--BundleAdjustment.refine_principal_point 1 "
+                f"--BundleAdjustment.refine_extra_params 1 "
+            )
+            os.system(ba_cmd)
 
         # Remove temporary directory
-        os.system(f"rm -rf {work_dir}")
+        # os.system(f"rm -rf {work_dir}")
 
-        print(f"Triangulation complete. Results saved to {output_sparse_path}")
+        print(f"Triangulation complete. Results saved to {output_sparse_path}\n")
 
         # Load and return the triangulated reconstruction in text format
         triangulated_reconstruction = pycolmap.Reconstruction(output_sparse_path)
@@ -538,9 +566,10 @@ class VGGTWrapper:
 
         # Reconstruct with or without BA
         if use_ba:
-            del self.model  # free memory
-            torch.cuda.empty_cache()
-            self.model = None
+            # del self.model  # free memory
+            # gc.collect()
+            # torch.cuda.empty_cache()
+            # self.model = None
 
             print("Running reconstruction with Bundle Adjustment...")
             t_start = time.time()
@@ -586,31 +615,6 @@ class VGGTWrapper:
         )
         timings["rescale_reconstruction"] = time.time() - t_start
 
-        # camera per folder handling TODO
-        if False:  # one_camera_per_folder:
-            print("Adjusting for one camera per folder...")
-            cameras_seen = {}
-            for pyimageid in reconstruction.images:
-                pyimage = reconstruction.images[pyimageid]
-                folder_name = os.path.dirname(pyimage.name)
-                cameras_seen[pyimage.name] = {
-                    "folder": folder_name,
-                    "id": pyimage.camera_id,
-                    "params": reconstruction.cameras[pyimage.camera_id].params,
-                }
-
-            # average camera params per folder
-            folder_cameras = {}
-            for cam in cameras_seen.values():
-                folder = cam["folder"]
-                if folder not in folder_cameras:
-                    folder_cameras[folder] = []
-                folder_cameras[folder].append(cam["params"])
-
-            for folder, params_list in folder_cameras.items():
-                avg_params = np.mean(params_list, axis=0)
-                folder_cameras[folder] = avg_params
-
         # Save reconstruction
         t_start = time.time()
         os.makedirs(output_path, exist_ok=True)
@@ -646,6 +650,22 @@ class VGGTWrapper:
 
         print(f"Reconstruction saved to {output_path}")
 
+        # save timings to a text file
+        with open(os.path.join(output_path, "timings.txt"), "w") as f:
+            for key, value in timings.items():
+                f.write(f"{key}: {value:.4f} s\n")
+
+        del (
+            images,
+            original_coords,
+            extrinsic,
+            intrinsic,
+            depth_map,
+            depth_conf,
+            points_3d,
+        )
+        torch.cuda.empty_cache()
+
         return reconstruction
 
 
@@ -655,12 +675,12 @@ if __name__ == "__main__":
     vggt = VGGTWrapper()
 
     # setting paths
-    input = "/home/mattia/Desktop/datasets/mydataset/data/salzburg_andrakirche/frames"
+    input = "/home/mattia/Desktop/Repos/wrapper_factory/benchmarks_3D/eth3d/electro/images_by_k"
     output = "/home/mattia/Desktop/Repos/vggt/wrapper_output/sparse"
     os.system(f"rm -rf {output}")
 
     # reconstruction
-    rec = vggt.forward(input, output, max_images=150, use_ba=False)
+    rec = vggt.forward(input, output, max_images=150, use_ba=True)
 
     # with VGGT default BA, only n images can be optimized.
     # TODO: use pycolmap BA to optimize this
