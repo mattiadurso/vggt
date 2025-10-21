@@ -500,7 +500,6 @@ class VGGTWrapper:
         output_path: str,
         max_images: int = 150,
         use_ba: bool = False,
-        one_camera_per_folder: bool = False,
         # BA-specific parameters
         max_reproj_error: float = 8.0,
         shared_camera: bool = False,
@@ -698,6 +697,10 @@ if __name__ == "__main__":
         elif args.dataset == "imc":
             input = f"{base_path}/imc/{args.scene}/set_100/images"
             output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
+
+        elif args.dataset == "mydataset":
+            input = f"{base_path}/mydataset/{args.scene}/images"
+            output = f"{base_path}/results/vggt/mydataset/{args.scene}/sparse"
         os.makedirs(output, exist_ok=True)
 
     else:
