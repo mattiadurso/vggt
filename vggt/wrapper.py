@@ -699,7 +699,7 @@ if __name__ == "__main__":
             output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
 
         elif args.dataset == "mydataset":
-            input = f"{base_path}/mydataset/{args.scene}/images"
+            input = f"{base_path}/mydataset/{args.scene}/frames"
             output = f"{base_path}/results/vggt/mydataset/{args.scene}/sparse"
         os.makedirs(output, exist_ok=True)
 
