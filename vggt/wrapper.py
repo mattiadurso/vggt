@@ -711,7 +711,7 @@ if __name__ == "__main__":
         output = f"{base_path}/vggt/wrapper_output/sparse"
 
     # reconstruction
-    rec = vggt.forward(input, output, max_images=150, use_ba=True)
+    rec = vggt.forward(input, output, max_images=args.max_images, use_ba=True)
 
     # with VGGT default BA, only n images can be optimized.
     # TODO: use pycolmap BA to optimize this
