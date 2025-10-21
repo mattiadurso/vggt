@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import torch
+from tqdm import tqdm
 from PIL import Image
 from torchvision import transforms as TF
 import numpy as np
@@ -36,7 +37,7 @@ def load_and_preprocess_images_square(image_path_list, target_size=1024):
     original_coords = []  # Renamed from position_info to be more descriptive
     to_tensor = TF.ToTensor()
 
-    for image_path in image_path_list:
+    for image_path in tqdm(image_path_list):
         # Open image
         img = Image.open(image_path)
 
@@ -75,7 +76,9 @@ def load_and_preprocess_images_square(image_path_list, target_size=1024):
         square_img.paste(img, (left, top))
 
         # Resize to target size
-        square_img = square_img.resize((target_size, target_size), Image.Resampling.BICUBIC)
+        square_img = square_img.resize(
+            (target_size, target_size), Image.Resampling.BICUBIC
+        )
 
         # Convert to tensor
         img_tensor = to_tensor(square_img)
@@ -155,10 +158,14 @@ def load_and_preprocess_images(image_path_list, mode="crop"):
             # Make the largest dimension 518px while maintaining aspect ratio
             if width >= height:
                 new_width = target_size
-                new_height = round(height * (new_width / width) / 14) * 14  # Make divisible by 14
+                new_height = (
+                    round(height * (new_width / width) / 14) * 14
+                )  # Make divisible by 14
             else:
                 new_height = target_size
-                new_width = round(width * (new_height / height) / 14) * 14  # Make divisible by 14
+                new_width = (
+                    round(width * (new_height / height) / 14) * 14
+                )  # Make divisible by 14
         else:  # mode == "crop"
             # Original behavior: set width to 518px
             new_width = target_size
@@ -187,7 +194,10 @@ def load_and_preprocess_images(image_path_list, mode="crop"):
 
                 # Pad with white (value=1.0)
                 img = torch.nn.functional.pad(
-                    img, (pad_left, pad_right, pad_top, pad_bottom), mode="constant", value=1.0
+                    img,
+                    (pad_left, pad_right, pad_top, pad_bottom),
+                    mode="constant",
+                    value=1.0,
                 )
 
         shapes.add((img.shape[1], img.shape[2]))
@@ -214,7 +224,10 @@ def load_and_preprocess_images(image_path_list, mode="crop"):
                 pad_right = w_padding - pad_left
 
                 img = torch.nn.functional.pad(
-                    img, (pad_left, pad_right, pad_top, pad_bottom), mode="constant", value=1.0
+                    img,
+                    (pad_left, pad_right, pad_top, pad_bottom),
+                    mode="constant",
+                    value=1.0,
                 )
             padded_images.append(img)
         images = padded_images
