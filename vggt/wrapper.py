@@ -679,6 +679,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", type=str, default="eth3d")
     parser.add_argument("--scene", type=str, default="electro")
+
     parser.add_argument("--max-images", type=int, default=150)
     parser.add_argument("--use-ba", action="store_true")
     parser.add_argument("--cuda-id", type=int, default=0)
@@ -711,7 +712,7 @@ if __name__ == "__main__":
         output = f"{base_path}/vggt/wrapper_output/sparse"
 
     # reconstruction
-    rec = vggt.forward(input, output, max_images=args.max_images, use_ba=True)
+    rec = vggt.forward(input, output, max_images=args.max_images, use_ba=args.use_ba)
 
     # with VGGT default BA, only n images can be optimized.
     # TODO: use pycolmap BA to optimize this
