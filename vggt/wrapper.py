@@ -131,6 +131,7 @@ class VGGTWrapper:
         Returns:
             Sampled list of image paths.
         """
+        max_images = max_images if max_images > 0 else 100_000
         if max_images is not None and len(image_paths) > max_images:
             sampled_paths = random.sample(image_paths, max_images)
             sampled_paths = sorted(sampled_paths)  # Keep sorted order
@@ -701,6 +702,7 @@ if __name__ == "__main__":
         elif args.dataset == "mydataset":
             input = f"{base_path}/mydataset/{args.scene}/frames"
             output = f"{base_path}/results/vggt/mydataset/{args.scene}/sparse"
+
         os.makedirs(output, exist_ok=True)
 
     else:
