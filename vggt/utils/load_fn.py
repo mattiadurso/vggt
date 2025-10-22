@@ -9,16 +9,69 @@ from tqdm import tqdm
 from PIL import Image
 from torchvision import transforms as TF
 import numpy as np
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-def load_and_preprocess_images_square(image_path_list, target_size=1024):
+def _process_single_image(image_path, target_size, to_tensor):
+    """Helper function to process a single image."""
+    # Open image
+    img = Image.open(image_path)
+
+    # If there's an alpha channel, blend onto white background
+    if img.mode == "RGBA":
+        background = Image.new("RGBA", img.size, (255, 255, 255, 255))
+        img = Image.alpha_composite(background, img)
+
+    # Convert to RGB
+    img = img.convert("RGB")
+
+    # Get original dimensions
+    width, height = img.size
+
+    # Make the image square by padding the shorter dimension
+    max_dim = max(width, height)
+
+    # Calculate padding
+    left = (max_dim - width) // 2
+    top = (max_dim - height) // 2
+
+    # Calculate scale factor for resizing
+    scale = target_size / max_dim
+
+    # Calculate final coordinates of original image in target space
+    x1 = left * scale
+    y1 = top * scale
+    x2 = (left + width) * scale
+    y2 = (top + height) * scale
+
+    # Store original image coordinates and scale
+    coords = np.array([x1, y1, x2, y2, width, height])
+
+    # Create a new black square image and paste original
+    square_img = Image.new("RGB", (max_dim, max_dim), (0, 0, 0))
+    square_img.paste(img, (left, top))
+
+    # Resize to target size
+    square_img = square_img.resize((target_size, target_size), Image.Resampling.BICUBIC)
+
+    # Convert to tensor
+    img_tensor = to_tensor(square_img)
+
+    return img_tensor, coords
+
+
+def load_and_preprocess_images_square(
+    image_path_list, target_size=1024, max_workers=20
+):
     """
     Load and preprocess images by center padding to square and resizing to target size.
     Also returns the position information of original pixels after transformation.
 
     Args:
         image_path_list (list): List of paths to image files
-        target_size (int, optional): Target size for both width and height. Defaults to 518.
+        target_size (int, optional): Target size for both width and height. Defaults to 1024.
+        max_workers (int, optional): Maximum number of threads for parallel processing.
+                                    Defaults to None (uses default ThreadPoolExecutor behavior).
 
     Returns:
         tuple: (
@@ -34,55 +87,29 @@ def load_and_preprocess_images_square(image_path_list, target_size=1024):
         raise ValueError("At least 1 image is required")
 
     images = []
-    original_coords = []  # Renamed from position_info to be more descriptive
+    original_coords = []
     to_tensor = TF.ToTensor()
 
-    for image_path in tqdm(image_path_list):
-        # Open image
-        img = Image.open(image_path)
+    # Process images in parallel
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all tasks
+        future_to_idx = {
+            executor.submit(
+                _process_single_image, img_path, target_size, to_tensor
+            ): idx
+            for idx, img_path in enumerate(image_path_list)
+        }
 
-        # If there's an alpha channel, blend onto white background
-        if img.mode == "RGBA":
-            background = Image.new("RGBA", img.size, (255, 255, 255, 255))
-            img = Image.alpha_composite(background, img)
+        # Initialize lists with None placeholders to maintain order
+        images = [None] * len(image_path_list)
+        original_coords = [None] * len(image_path_list)
 
-        # Convert to RGB
-        img = img.convert("RGB")
-
-        # Get original dimensions
-        width, height = img.size
-
-        # Make the image square by padding the shorter dimension
-        max_dim = max(width, height)
-
-        # Calculate padding
-        left = (max_dim - width) // 2
-        top = (max_dim - height) // 2
-
-        # Calculate scale factor for resizing
-        scale = target_size / max_dim
-
-        # Calculate final coordinates of original image in target space
-        x1 = left * scale
-        y1 = top * scale
-        x2 = (left + width) * scale
-        y2 = (top + height) * scale
-
-        # Store original image coordinates and scale
-        original_coords.append(np.array([x1, y1, x2, y2, width, height]))
-
-        # Create a new black square image and paste original
-        square_img = Image.new("RGB", (max_dim, max_dim), (0, 0, 0))
-        square_img.paste(img, (left, top))
-
-        # Resize to target size
-        square_img = square_img.resize(
-            (target_size, target_size), Image.Resampling.BICUBIC
-        )
-
-        # Convert to tensor
-        img_tensor = to_tensor(square_img)
-        images.append(img_tensor)
+        # Collect results as they complete
+        for future in tqdm(as_completed(future_to_idx), total=len(image_path_list)):
+            idx = future_to_idx[future]
+            img_tensor, coords = future.result()
+            images[idx] = img_tensor
+            original_coords[idx] = coords
 
     # Stack all images
     images = torch.stack(images)

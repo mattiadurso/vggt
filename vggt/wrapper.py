@@ -31,6 +31,7 @@ class VGGTWrapper:
         self,
         cuda_id: int = 0,
         seed: int = 42,
+        oom_safe: bool = False,
         model_url: str = "https://huggingface.co/facebook/VGGT-1B/resolve/main/model.pt",
     ):
         """
@@ -43,6 +44,7 @@ class VGGTWrapper:
         """
         self.seed = seed
         self._set_seed(seed)
+        self.oom_safe = oom_safe
 
         # Setup device and dtype
         self.device = torch.device(
@@ -569,10 +571,12 @@ class VGGTWrapper:
 
         # Reconstruct with or without BA
         if use_ba:
-            # del self.model  # free memory
-            # gc.collect()
-            # torch.cuda.empty_cache()
-            # self.model = None
+            if self.oom_safe:
+                print("OOM-safe mode enabled: freeing VGGT model from memory...")
+                del self.model  # free memory
+                gc.collect()
+                torch.cuda.empty_cache()
+                self.model = None
 
             print("Running reconstruction with Bundle Adjustment...")
             t_start = time.time()
@@ -683,11 +687,12 @@ if __name__ == "__main__":
     parser.add_argument("--max-images", type=int, default=150)
     parser.add_argument("--use-ba", action="store_true")
     parser.add_argument("--cuda-id", type=int, default=0)
+    parser.add_argument("--oom-safe", action="store_true")
     args = parser.parse_args()
 
     from vggt.wrapper import VGGTWrapper
 
-    vggt = VGGTWrapper(cuda_id=args.cuda_id)
+    vggt = VGGTWrapper(cuda_id=args.cuda_id, oom_safe=args.oom_safe)
 
     # setting paths
     base_path = "/data/mdurso"
@@ -697,7 +702,7 @@ if __name__ == "__main__":
             output = f"{base_path}/results/vggt/eth3d/{args.scene}/sparse"
 
         elif args.dataset == "imc":
-            input = f"{base_path}/imc/{args.scene}/set_100/images"
+            input = f"{base_path}/imc/phototourism/{args.scene}/set_100/images"
             output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
 
         elif args.dataset == "mydataset":
@@ -707,11 +712,21 @@ if __name__ == "__main__":
         os.makedirs(output, exist_ok=True)
 
     else:
-        base_path = "/home/mattia/Desktop/Repos"
-        input = (
-            f"{base_path}/wrapper_factory/benchmarks_3D/eth3d/{args.scene}/images_by_k"
-        )
-        output = f"{base_path}/vggt/wrapper_output/sparse"
+        base_path = "/home/mattia/Desktop/Repos/wrapper_factory"
+        if args.dataset == "eth3d":
+            input = f"{base_path}/eth3d/{args.scene}/images_by_k"
+            output = f"{base_path}/results/vggt/eth3d/{args.scene}/sparse"
+
+        elif args.dataset == "imc":
+
+            input = f"{base_path}/benchmarks_2D/imc/data/phototourism/{args.scene}/set_100/images"
+            output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
+
+        elif args.dataset == "mydataset":
+            input = f"{base_path}/mydataset/{args.scene}/frames"
+            output = f"{base_path}/results/vggt/mydataset/{args.scene}/sparse"
+
+        os.makedirs(output, exist_ok=True)
 
     # reconstruction
     rec = vggt.forward(input, output, max_images=args.max_images, use_ba=args.use_ba)
