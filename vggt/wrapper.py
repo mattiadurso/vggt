@@ -69,7 +69,7 @@ class VGGTWrapper:
 
         # Fixed resolutions
         self.vggt_fixed_resolution = 518
-        self.img_load_resolution = 768
+        self.img_load_resolution = 1024
 
         print(f"VGGTWrapper initialized on {self.device} with dtype {self.dtype}")
 
@@ -360,7 +360,7 @@ class VGGTWrapper:
         vis_thresh: float = 0.1,
         query_frame_num: int = 8,
         max_query_pts: int = 4096,
-        fine_tracking: bool = False,
+        fine_tracking: bool = True,
         # Non-BA parameters
         conf_thres_value: float = 5.0,
         max_points_for_colmap: int = 100_000,
