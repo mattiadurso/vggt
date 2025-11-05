@@ -618,4 +618,10 @@ if __name__ == "__main__":
     # reconstruction
     input = "/data/mdurso/mydataset/vienna_state_opera/frames"
     output = "/data/mdurso/mydataset/vienna_state_opera/sparse_vggt"
-    rec = vggt.forward(input, output, max_images=args.max_images, use_ba=args.use_ba)
+    rec = vggt.forward(
+        input,
+        output,
+        max_images=args.max_images,
+        use_ba=args.use_ba,
+        cuda_id=args.cuda_id,
+    )
