@@ -1,5 +1,6 @@
 import os
 import gc
+import h5py
 import glob
 import random
 import numpy as np
@@ -68,7 +69,7 @@ class VGGTWrapper:
 
         # Fixed resolutions
         self.vggt_fixed_resolution = 518
-        self.img_load_resolution = 1024
+        self.img_load_resolution = 768
 
         print(f"VGGTWrapper initialized on {self.device} with dtype {self.dtype}")
 
@@ -104,18 +105,17 @@ class VGGTWrapper:
         image_paths = []
 
         for ext in valid_extensions:
-            # Search in root, one level deep, and two levels deep
+            # Search in root and one level deep
             image_paths.extend(glob.glob(os.path.join(images_path, f"*.{ext}")))
             image_paths.extend(glob.glob(os.path.join(images_path, "*", f"*.{ext}")))
-            image_paths.extend(
-                glob.glob(os.path.join(images_path, "*", "*", f"*.{ext}"))
-            )
 
         # Remove duplicates and sort
         image_paths = sorted(list(set(image_paths)))
 
         if len(image_paths) == 0:
-            raise ValueError(f"No images found in {images_path}")
+            raise ValueError(
+                f"No images found in {images_path}. Path {images_path} is invalid or empty."
+            )
 
         print(f"Found {len(image_paths)} images in {images_path}")
         return image_paths
@@ -146,12 +146,6 @@ class VGGTWrapper:
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Run VGGT model to estimate cameras and depth.
-
-        Args:
-            images: Batch of images [B, 3, H, W].
-
-        Returns:
-            Tuple of (extrinsic, intrinsic, depth_map, depth_conf).
         """
         assert len(images.shape) == 4 and images.shape[1] == 3
 
@@ -165,16 +159,14 @@ class VGGTWrapper:
 
         with torch.no_grad():
             with torch.amp.autocast(device_type="cuda", dtype=self.dtype):
-                images_batch = images_resized[None]  # add batch dimension
+                images_batch = images_resized[None]
                 aggregated_tokens_list, ps_idx = self.model.aggregator(images_batch)
 
-            # Predict cameras
             pose_enc = self.model.camera_head(aggregated_tokens_list)[-1]
             extrinsic, intrinsic = pose_encoding_to_extri_intri(
                 pose_enc, images_batch.shape[-2:]
             )
 
-            # Predict depth
             depth_map, depth_conf = self.model.depth_head(
                 aggregated_tokens_list, images_batch, ps_idx
             )
@@ -184,6 +176,10 @@ class VGGTWrapper:
         intrinsic = intrinsic.squeeze(0).cpu().numpy()
         depth_map = depth_map.squeeze(0).cpu().numpy()
         depth_conf = depth_conf.squeeze(0).cpu().numpy()
+
+        # Clean up intermediate tensors
+        del images_resized, images_batch, pose_enc, aggregated_tokens_list, ps_idx
+        torch.cuda.empty_cache()
 
         return extrinsic, intrinsic, depth_map, depth_conf
 
@@ -250,7 +246,8 @@ class VGGTWrapper:
         )
 
         if reconstruction is None:
-            raise ValueError("No reconstruction can be built with BA")
+            # raise ValueError("No reconstruction can be built with BA")
+            return None, None
 
         # Bundle Adjustment
         ba_options = pycolmap.BundleAdjustmentOptions()
@@ -348,169 +345,22 @@ class VGGTWrapper:
 
         return reconstruction
 
-    def triangulate_with_colmap(
-        self,
-        images_path: str,
-        input_sparse_path: str,
-        output_sparse_path: str,
-        clear_points: bool = True,
-        refine_intrinsics: bool = False,
-        use_ba: bool = False,
-        verbose: bool = False,
-    ):
-        """
-        Triangulate 3D points using COLMAP's feature extraction, matching, and triangulation.
-        This is a bit unelegant since we have to call COLMAP multiple times for each image to
-        extract features with the correct camera parameters.
-
-        This method:
-        1. Loads the reconstruction from input_sparse_path
-        2. Extracts SIFT features for each image using the camera parameters from reconstruction
-        3. Matches features across all image pairs
-        4. Triangulates 3D points from the matches
-        5. Optionally runs bundle adjustment
-
-        Args:
-            images_path: Path to directory containing images.
-            input_sparse_path: Path to input COLMAP sparse reconstruction (with cameras and poses).
-            output_sparse_path: Path where to save the triangulated reconstruction.
-            clear_points: Whether to clear existing 3D points before triangulation.
-            refine_intrinsics: Whether to refine camera intrinsics during BA.
-            ba_iterations: Number of bundle adjustment iterations (0 = skip BA).
-        """
-        verbose = "" if verbose else " > /dev/null 2>&1"
-        # add sparse to input and output paths if not present
-        if not input_sparse_path.endswith("sparse"):
-            input_sparse_path = os.path.join(input_sparse_path, "sparse")
-        if not output_sparse_path.endswith("sparse"):
-            output_sparse_path = os.path.join(output_sparse_path, "sparse")
-        output_sparse_path = (
-            output_sparse_path + "_ba" if use_ba else output_sparse_path
-        )
-        print(f"Triangulating points with COLMAP...")
-        print(f"  Images path: {images_path}")
-        print(f"  Input sparse: {input_sparse_path}")
-        print(f"  Output sparse: {output_sparse_path}")
-
-        # Load reconstruction to get camera parameters
-        reconstruction = pycolmap.Reconstruction(input_sparse_path)
-
-        # Create working directory for COLMAP database
-        work_dir = Path(output_sparse_path).parent / "colmap_work"
-        os.makedirs(work_dir, exist_ok=True)
-        database_path = work_dir / "database.db"
-
-        if database_path.exists():
-            print("Using existing COLMAP database...")
-        else:
-            # Create temporary directory to move images one at a time
-            temp_path = work_dir / "temp"
-            os.makedirs(temp_path, exist_ok=True)
-
-            # Move all images to temp directory first
-            print("Moving images to temporary directory...")
-            os.system(f"cp -r {images_path}/* {temp_path}")
-
-            # Process each image individually with COLMAP feature extraction
-            print("Extracting features for each image...")
-            for pyimage in tqdm(
-                sorted(reconstruction.images.values(), key=lambda x: x.image_id),
-                desc="Extracting features",
-            ):
-                image_name = pyimage.name
-                camera = reconstruction.cameras[pyimage.camera_id]
-
-                # Move image back temporarily
-                temp_image_path = f"{temp_path}/{image_name}"
-                final_image_path = work_dir / "frames" / image_name
-
-                # Create subdirectories if needed
-                os.makedirs(os.path.dirname(final_image_path), exist_ok=True)
-                os.system(f"mv {temp_image_path} {final_image_path}")
-
-                # Get camera parameters
-                camera_model = camera.model.name
-                params = [str(p) for p in camera.params]
-
-                # Run COLMAP feature extraction for this image
-                cmd = (
-                    f"colmap feature_extractor "
-                    f"--database_path {database_path} "
-                    f"--image_path {work_dir / 'frames'} "
-                    f"--ImageReader.camera_model {camera_model} "
-                    f'--ImageReader.camera_params "{",".join(params)}"'
-                )
-                os.system(cmd + verbose)
-                # os.system(cmd + verbose)
-
-            # Match features
-            print("Matching features...")
-            match_cmd = f"colmap exhaustive_matcher --database_path {database_path}"
-            os.system(match_cmd + verbose)
-            # os.system(match_cmd + verbose)
-
-        os.makedirs(output_sparse_path, exist_ok=True)
-        triangulate_cmd = (
-            f"colmap point_triangulator "
-            f"--input_path {input_sparse_path} "
-            f"--database_path {database_path} "
-            f"--image_path {work_dir / 'frames'} "
-            f"--output_path {output_sparse_path} "
-            f"--clear_points {1 if clear_points else 0} "
-            f"--refine_intrinsics {1 if refine_intrinsics else 0} "
-        )
-
-        triangulate_cmd += (
-            "--Mapper.ba_refine_focal_length 0 "
-            "--Mapper.ba_refine_extra_params 0 "
-            "--Mapper.ba_refine_principal_point 0 "
-            "--Mapper.ba_local_max_num_iterations 1 "
-            "--Mapper.ba_global_max_num_iterations 1 "
-            "--Mapper.ba_global_function_tolerance 1.0 "
-            "--Mapper.ba_local_function_tolerance 1.0 "
-        )
-
-        print("Triangulating points...")
-        os.system(triangulate_cmd + verbose)
-
-        if use_ba:
-            print("Running bundle adjustment...")
-            ba_cmd = (
-                f"colmap bundle_adjuster "
-                f"--input_path {output_sparse_path} "
-                f"--output_path {output_sparse_path} "
-                f"--BundleAdjustment.max_num_iterations 1024 "
-                f"--BundleAdjustment.refine_focal_length 1 "
-                f"--BundleAdjustment.refine_principal_point 1 "
-                f"--BundleAdjustment.refine_extra_params 1 "
-            )
-            os.system(ba_cmd)
-
-        # Remove temporary directory
-        # os.system(f"rm -rf {work_dir}")
-
-        print(f"Triangulation complete. Results saved to {output_sparse_path}\n")
-
-        # Load and return the triangulated reconstruction in text format
-        triangulated_reconstruction = pycolmap.Reconstruction(output_sparse_path)
-        triangulated_reconstruction.write_text(output_sparse_path)
-
-        return triangulated_reconstruction
-
+    @torch.no_grad()
     def forward(
         self,
         images_path: str,
         output_path: str,
         max_images: int = 150,
         use_ba: bool = False,
+        save_depth: bool = True,
         # BA-specific parameters
-        max_reproj_error: float = 8.0,
+        max_reproj_error: float = 10.0,
         shared_camera: bool = False,
         camera_type: str = "SIMPLE_PINHOLE",
-        vis_thresh: float = 0.2,
+        vis_thresh: float = 0.1,
         query_frame_num: int = 8,
         max_query_pts: int = 4096,
-        fine_tracking: bool = True,
+        fine_tracking: bool = False,
         # Non-BA parameters
         conf_thres_value: float = 5.0,
         max_points_for_colmap: int = 100_000,
@@ -540,6 +390,7 @@ class VGGTWrapper:
         if not output_path.endswith("sparse"):
             output_path = os.path.join(output_path, "sparse")
         os.makedirs(output_path, exist_ok=True)
+
         timings = {}
         t_total_start = time.time()
 
@@ -611,24 +462,46 @@ class VGGTWrapper:
             timings["reconstruction_without_ba"] = time.time() - t_start
 
         # Rescale reconstruction to original resolution
-        t_start = time.time()
-        reconstruction = self._rescale_reconstruction(
-            reconstruction,
-            base_image_paths,
-            original_coords.cpu().numpy(),
-            recon_resolution,
-            shift_point2d=use_ba,
-            shared_camera=shared_camera if use_ba else False,
-        )
-        timings["rescale_reconstruction"] = time.time() - t_start
+        if reconstruction is not None:
+            t_start = time.time()
+            reconstruction = self._rescale_reconstruction(
+                reconstruction,
+                base_image_paths,
+                original_coords.cpu().numpy(),
+                recon_resolution,
+                shift_point2d=use_ba,
+                shared_camera=shared_camera if use_ba else False,
+            )
+            timings["rescale_reconstruction"] = time.time() - t_start
 
-        # Save reconstruction
-        t_start = time.time()
-        os.makedirs(output_path, exist_ok=True)
-        reconstruction.write_text(output_path)
-        timings["save_reconstruction"] = time.time() - t_start
+            # Save reconstruction
+            t_start = time.time()
+            output_path = output_path + "_ba" if use_ba else output_path
+            os.makedirs(output_path, exist_ok=True)
+            reconstruction.write_text(output_path)
 
-        timings["total"] = time.time() - t_total_start
+            if save_depth:  # save depths as h5
+                print("Saving depth maps...")
+                depth_output_path = os.path.join(output_path, "depth_maps")
+
+                for i, img_path in enumerate(base_image_paths):
+                    depth_map_i = depth_map[i].squeeze()
+                    depth_file_name = img_path.split(".")[0] + ".h5"
+                    depth_file_path = os.path.join(depth_output_path, depth_file_name)
+                    os.makedirs(os.path.dirname(depth_file_path), exist_ok=True)
+
+                    with h5py.File(depth_file_path, "w") as hf:
+                        hf.create_dataset("depth", data=depth_map_i)
+
+            timings["save_reconstruction"] = time.time() - t_start
+
+            timings["total"] = time.time() - t_total_start
+            print(f"Reconstruction saved to {output_path}")
+        else:
+            timings["rescale_reconstruction"] = 0.0
+            timings["save_reconstruction"] = 0.0
+            timings["total"] = time.time() - t_total_start
+            print("No reconstruction could be built.")
 
         # Print timing summary
         print("\n" + "=" * 60)
@@ -655,13 +528,13 @@ class VGGTWrapper:
         print(f"TOTAL TIME:                  {timings['total']:>8.2f}s")
         print("=" * 60 + "\n")
 
-        print(f"Reconstruction saved to {output_path}")
-
         # save timings to a text file
-        with open(os.path.join(output_path, "timings.txt"), "w") as f:
+        t_path = "timings.txt" if not use_ba else "timings_ba.txt"
+        with open(os.path.join(output_path, t_path), "w") as f:
             for key, value in timings.items():
                 f.write(f"{key}: {value:.4f} s\n")
 
+        # Clean up all memory before returning
         del (
             images,
             original_coords,
@@ -671,6 +544,22 @@ class VGGTWrapper:
             depth_conf,
             points_3d,
         )
+
+        # Delete reconstruction-related objects (they can be large)
+        if "pred_tracks" in locals():
+            del pred_tracks
+        if "pred_vis_scores" in locals():
+            del pred_vis_scores
+        if "pred_confs" in locals():
+            del pred_confs
+        if "points_rgb" in locals():
+            del points_rgb
+        if "track_mask" in locals():
+            del track_mask
+        if "valid_track_mask" in locals():
+            del valid_track_mask
+
+        gc.collect()
         torch.cuda.empty_cache()
 
         return reconstruction
@@ -709,30 +598,24 @@ if __name__ == "__main__":
             input = f"{base_path}/mydataset/{args.scene}/frames"
             output = f"{base_path}/results/vggt/mydataset/{args.scene}/sparse"
 
-        os.makedirs(output, exist_ok=True)
-
     else:
         base_path = "/home/mattia/Desktop/Repos/wrapper_factory"
         if args.dataset == "eth3d":
-            input = f"{base_path}/eth3d/{args.scene}/images_by_k"
-            output = f"{base_path}/results/vggt/eth3d/{args.scene}/sparse"
+            input = f"{base_path}/benchmarks_3D/eth3d/{args.scene}/images_by_k"
+            output = f"{base_path}/benchmarks_3D/results/vggt/eth3d/{args.scene}/sparse"
 
         elif args.dataset == "imc":
 
             input = f"{base_path}/benchmarks_2D/imc/data/phototourism/{args.scene}/set_100/images"
-            output = f"{base_path}/results/vggt/imc/{args.scene}/sparse"
+            output = f"{base_path}/benchmarks_3D/results/vggt/imc/{args.scene}/sparse"
 
         elif args.dataset == "mydataset":
             input = f"{base_path}/mydataset/{args.scene}/frames"
-            output = f"{base_path}/results/vggt/mydataset/{args.scene}/sparse"
-
-        os.makedirs(output, exist_ok=True)
+            output = (
+                f"{base_path}/benchmarks_3D/results/vggt/mydataset/{args.scene}/sparse"
+            )
 
     # reconstruction
+    input = "/data/mdurso/mydataset/vienna_state_opera/frames"
+    output = "/data/mdurso/mydataset/vienna_state_opera/sparse_vggt"
     rec = vggt.forward(input, output, max_images=args.max_images, use_ba=args.use_ba)
-
-    # with VGGT default BA, only n images can be optimized.
-    # TODO: use pycolmap BA to optimize this
-
-    # triangulation with colmap (just adding more points to the reconstruction)
-    # vggt.triangulate_with_colmap(input, output, output)
