@@ -357,9 +357,9 @@ class VGGTWrapper:
         max_reproj_error: float = 10.0,
         shared_camera: bool = False,
         camera_type: str = "SIMPLE_PINHOLE",
-        vis_thresh: float = 0.1,
-        query_frame_num: int = 8,
-        max_query_pts: int = 4096,
+        vis_thresh: float = 0.2,
+        query_frame_num: int = 10,
+        max_query_pts: int = 4096 * 2,
         fine_tracking: bool = True,
         # Non-BA parameters
         conf_thres_value: float = 5.0,
