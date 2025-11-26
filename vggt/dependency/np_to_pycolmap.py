@@ -91,7 +91,6 @@ def batch_np_matrix_to_pycolmap(
         point3D_id = reconstruction.add_point3D(points3d[vidx], pycolmap.Track(), rgb)
         vidx_to_point3D_id[vidx] = point3D_id
 
-    num_points3D = len(valid_idx)
     camera = None
     # frame idx
     for fidx in range(N):

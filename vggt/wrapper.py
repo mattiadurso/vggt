@@ -69,7 +69,7 @@ class VGGTWrapper:
 
         # Fixed resolutions
         self.vggt_fixed_resolution = 518
-        self.img_load_resolution = 1024
+        self.img_load_resolution = 768
 
         print(f"VGGTWrapper initialized on {self.device} with dtype {self.dtype}")
 
@@ -204,6 +204,8 @@ class VGGTWrapper:
         image_size = np.array(images.shape[-2:])
         scale = self.img_load_resolution / self.vggt_fixed_resolution
 
+        # Track establishment timing
+        t_track_start = time.time()
         with torch.amp.autocast(device_type="cuda", dtype=self.dtype):
             # Predicting Tracks
             # Using VGGSfM tracker instead of VGGT tracker for efficiency
@@ -224,14 +226,15 @@ class VGGTWrapper:
                     fine_tracking=fine_tracking,
                 )
             )
-
             torch.cuda.empty_cache()
+        track_time = time.time() - t_track_start
 
         # rescale the intrinsic matrix from 518 to 1024
         intrinsic[:, :2, :] *= scale
         track_mask = pred_vis_scores > vis_thresh
 
-        # TODO: radial distortion, iterative BA, masks
+        # Reconstruction timing (BA only)
+        t_ba_start = time.time()
         reconstruction, valid_track_mask = batch_np_matrix_to_pycolmap(
             points_3d,
             extrinsic,
@@ -246,16 +249,17 @@ class VGGTWrapper:
         )
 
         if reconstruction is None:
-            # raise ValueError("No reconstruction can be built with BA")
-            return None, None
+            return None, None, track_time, 0.0
 
-        # Bundle Adjustment
         ba_options = pycolmap.BundleAdjustmentOptions()
+        ba_options.refine_principal_point = True
+
         pycolmap.bundle_adjustment(reconstruction, ba_options)
+        ba_time = time.time() - t_ba_start
 
         reconstruction_resolution = self.img_load_resolution
 
-        return reconstruction, reconstruction_resolution
+        return reconstruction, reconstruction_resolution, track_time, ba_time
 
     def _reconstruct_without_ba(
         self,
@@ -357,10 +361,10 @@ class VGGTWrapper:
         max_reproj_error: float = 10.0,
         shared_camera: bool = False,
         camera_type: str = "SIMPLE_PINHOLE",
-        vis_thresh: float = 0.2,
-        query_frame_num: int = 10,
-        max_query_pts: int = 4096 * 2,
-        fine_tracking: bool = True,
+        vis_thresh: float = 0.3,
+        query_frame_num: int = 30,
+        max_query_pts: int = 4096,
+        fine_tracking: bool = False,
         # Non-BA parameters
         conf_thres_value: float = 5.0,
         max_points_for_colmap: int = 100_000,
@@ -431,21 +435,25 @@ class VGGTWrapper:
 
             print("Running reconstruction with Bundle Adjustment...")
             t_start = time.time()
-            reconstruction, recon_resolution = self._reconstruct_with_ba(
-                images,
-                extrinsic,
-                intrinsic,
-                depth_map,
-                depth_conf,
-                points_3d,
-                max_query_pts,
-                query_frame_num,
-                vis_thresh,
-                max_reproj_error,
-                shared_camera,
-                camera_type,
-                fine_tracking,
+            reconstruction, recon_resolution, track_time, ba_time = (
+                self._reconstruct_with_ba(
+                    images,
+                    extrinsic,
+                    intrinsic,
+                    depth_map,
+                    depth_conf,
+                    points_3d,
+                    max_query_pts,
+                    query_frame_num,
+                    vis_thresh,
+                    max_reproj_error,
+                    shared_camera,
+                    camera_type,
+                    fine_tracking,
+                )
             )
+            timings["track_establishment"] = track_time
+            timings["bundle_adjustment"] = ba_time
             timings["reconstruction_with_ba"] = time.time() - t_start
         else:
             print("Running reconstruction without Bundle Adjustment...")
@@ -514,6 +522,10 @@ class VGGTWrapper:
         print(f"Run VGGT model:              {timings['run_vggt']:>8.2f}s")
         if use_ba:
             print(
+                f"Track establishment:         {timings['track_establishment']:>8.2f}s"
+            )
+            print(f"Bundle adjustment:           {timings['bundle_adjustment']:>8.2f}s")
+            print(
                 f"Reconstruction (with BA):    {timings['reconstruction_with_ba']:>8.2f}s"
             )
         else:
@@ -573,15 +585,14 @@ if __name__ == "__main__":
     parser.add_argument("--dataset", type=str, default="eth3d")
     parser.add_argument("--scene", type=str, default="door")
 
-    parser.add_argument("--max-images", type=int, default=150)
+    parser.add_argument("--max-images", type=int, default=170)
     parser.add_argument("--use-ba", action="store_true")
     parser.add_argument("--cuda-id", type=int, default=0)
-    parser.add_argument("--oom-safe", action="store_true")
     args = parser.parse_args()
 
     from vggt.wrapper import VGGTWrapper
 
-    vggt = VGGTWrapper(cuda_id=args.cuda_id, oom_safe=args.oom_safe)
+    vggt = VGGTWrapper(cuda_id=args.cuda_id, oom_safe=args.use_ba)
 
     # setting paths
     base_path = "/data/mdurso"
@@ -610,9 +621,9 @@ if __name__ == "__main__":
             output = f"{base_path}/benchmarks_3D/results/vggt/imc/{args.scene}/sparse"
 
         elif args.dataset == "mydataset":
-            input = f"{base_path}/mydataset/{args.scene}/frames"
+            input = f"/home/mattia/Desktop/datasets/mydataset/data/{args.scene}/frames"
             output = (
-                f"{base_path}/benchmarks_3D/results/vggt/mydataset/{args.scene}/sparse"
+                f"/home/mattia/Desktop/Repos/vggt/wrapper_output/{args.scene}/sparse"
             )
 
     # reconstruction

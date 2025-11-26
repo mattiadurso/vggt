@@ -73,7 +73,7 @@ class Aggregator(nn.Module):
 
         self.__build_patch_embed__(
             patch_embed, img_size, patch_size, num_register_tokens, embed_dim=embed_dim
-        )
+        )  # DINO2 vit patch embed
 
         # Initialize rotary position embedding if frequency > 0
         self.rope = (

@@ -56,6 +56,7 @@ def predict_tracks(
     tracker = build_vggsfm_tracker().to(device, dtype)
 
     # Find query frames
+    query_frame_num = min(query_frame_num, images.shape[0])
     query_frame_indexes = generate_rank_by_dino(
         images, query_frame_num=query_frame_num, device=device
     )
@@ -81,8 +82,8 @@ def predict_tracks(
     if fine_tracking:
         print("For faster inference, consider disabling fine_tracking")
 
-    for query_index in query_frame_indexes:
-        print(f"Predicting tracks for query frame {query_index}")
+    for i, query_index in enumerate(query_frame_indexes):
+        print(f"{i+1}: Predicting tracks for query frame {query_index}")
         pred_track, pred_vis, pred_conf, pred_point_3d, pred_color = _forward_on_query(
             query_index,
             images,
