@@ -484,7 +484,7 @@ class VGGTWrapper:
 
             # Save reconstruction
             t_start = time.time()
-            output_path = output_path + "_ba" if use_ba else output_path
+            # output_path = output_path + "_ba" if use_ba else output_path
             os.makedirs(output_path, exist_ok=True)
             reconstruction.write_text(output_path)
 
@@ -541,7 +541,7 @@ class VGGTWrapper:
         print("=" * 60 + "\n")
 
         # save timings to a text file
-        t_path = "timings.txt" if not use_ba else "timings_ba.txt"
+        t_path = "timings.txt"
         with open(os.path.join(output_path, t_path), "w") as f:
             for key, value in timings.items():
                 f.write(f"{key}: {value:.4f} s\n")
@@ -627,6 +627,18 @@ if __name__ == "__main__":
             )
 
     # reconstruction
-    input = "/data/mdurso/mydataset/vienna_state_opera/frames"
-    output = "/data/mdurso/mydataset/vienna_state_opera/sparse_vggt"
-    rec = vggt.forward(input, output, max_images=args.max_images, use_ba=args.use_ba)
+    # scene = args.scene
+    scene = "vienna_state_opera"
+    input = f"/home/mattia/Desktop/datasets/mydataset/data/{scene}/frames"
+    base_path = "/home/mattia/Desktop/Repos/wrapper_factory"
+    output = f"/home/mattia/Desktop/Repos/vggt/ba_increasing/{scene}_qf_{query_frames}"
+
+    rec = vggt.forward(
+        input,
+        output,
+        max_images=args.max_images,
+        use_ba=args.use_ba,
+        query_frame_num=8,
+        fine_tracking=False,
+        shared_camera=False,
+    )
