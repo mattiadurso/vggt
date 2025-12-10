@@ -61,7 +61,7 @@ for dataset in [
     _ba = "_ba" if use_ba else ""
     base_path = paths[dataset]["base_path"]
     images_path = paths[dataset]["images_path"]  # I might have files in that path
-    output_folder = "/home/mattia/Desktop/Repos/batchsfm/benchmarks"  # paths[dataset]["output_path"]
+    output_folder = paths[dataset]["output_path"]
     scenes = sorted(os.listdir(f"{base_path}"))
 
     if not use_ba:

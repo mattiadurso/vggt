@@ -1,0 +1,1486 @@
+Processing eth3d_local - botanical_garden...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 30 images in /home/mattia/Desktop/datasets/eth3d/botanical_garden/images_by_k
+Loading 30 images...
+  0%|          | 0/30 [00:00<?, ?it/s]  3%|▎         | 1/30 [00:00<00:23,  1.25it/s] 13%|█▎        | 4/30 [00:00<00:04,  5.56it/s] 33%|███▎      | 10/30 [00:01<00:01, 15.10it/s] 70%|███████   | 21/30 [00:01<00:00, 24.23it/s] 83%|████████▎ | 25/30 [00:01<00:00, 25.05it/s]100%|██████████| 30/30 [00:01<00:00, 19.61it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:38:46.697215 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:38:52.883144 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 209178
+   Parameters : 97886
+   Iterations : 101
+         Time : 6.14124 [s]
+ Initial cost : 9.39739 [px]
+   Final cost : 0.405983 [px]
+  Termination : No convergence
+
+I20251204 23:38:52.883177 129155270464640 timer.cc:91] Elapsed time: 0.103 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 24
+3: Predicting tracks for query frame 6
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 2
+6: Predicting tracks for query frame 4
+7: Predicting tracks for query frame 7
+8: Predicting tracks for query frame 3
+9: Predicting tracks for query frame 5
+10: Predicting tracks for query frame 8
+Processing non visible frames: [13, 14, 15, 16, 17, 18, 26, 27, 28]
+Processing non visible frames: [15, 16, 17, 18, 26, 27]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/botanical_garden/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.64s
+Run VGGT model:                  4.29s
+Track establishment:            23.19s
+Bundle adjustment:               6.72s
+Reconstruction (with BA):       29.91s
+Rescale reconstruction:          0.19s
+Save reconstruction:             0.16s
+------------------------------------------------------------
+TOTAL TIME:                     36.32s
+============================================================
+
+Processing eth3d_local - boulders...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 26 images in /home/mattia/Desktop/datasets/eth3d/boulders/images_by_k
+Loading 26 images...
+  0%|          | 0/26 [00:00<?, ?it/s]  4%|▍         | 1/26 [00:00<00:19,  1.30it/s] 12%|█▏        | 3/26 [00:00<00:05,  4.07it/s] 81%|████████  | 21/26 [00:01<00:00, 26.37it/s] 96%|█████████▌| 25/26 [00:01<00:00, 27.69it/s]100%|██████████| 26/26 [00:01<00:00, 19.92it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:39:12.750961 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:39:14.622102 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 64640
+   Parameters : 29762
+   Iterations : 101
+         Time : 1.857 [s]
+ Initial cost : 3.14285 [px]
+   Final cost : 0.234564 [px]
+  Termination : No convergence
+
+I20251204 23:39:14.622239 129155270464640 timer.cc:91] Elapsed time: 0.031 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 10
+3: Predicting tracks for query frame 1
+4: Predicting tracks for query frame 7
+5: Predicting tracks for query frame 14
+6: Predicting tracks for query frame 6
+7: Predicting tracks for query frame 15
+8: Predicting tracks for query frame 4
+9: Predicting tracks for query frame 17
+10: Predicting tracks for query frame 3
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/boulders/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.35s
+Run VGGT model:                  2.61s
+Track establishment:             7.51s
+Bundle adjustment:               2.03s
+Reconstruction (with BA):        9.53s
+Rescale reconstruction:          0.06s
+Save reconstruction:             0.06s
+------------------------------------------------------------
+TOTAL TIME:                     13.76s
+============================================================
+
+Processing eth3d_local - bridge...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 110 images in /home/mattia/Desktop/datasets/eth3d/bridge/images_by_k
+Loading 110 images...
+  0%|          | 0/110 [00:00<?, ?it/s]  1%|          | 1/110 [00:00<01:38,  1.10it/s] 10%|█         | 11/110 [00:01<00:06, 14.40it/s] 19%|█▉        | 21/110 [00:01<00:07, 12.53it/s] 33%|███▎      | 36/110 [00:01<00:02, 25.13it/s] 40%|████      | 44/110 [00:02<00:03, 16.69it/s] 49%|████▉     | 54/110 [00:02<00:02, 23.24it/s] 55%|█████▌    | 61/110 [00:03<00:02, 17.56it/s] 60%|██████    | 66/110 [00:04<00:02, 16.66it/s] 64%|██████▎   | 70/110 [00:04<00:02, 17.64it/s] 71%|███████   | 78/110 [00:04<00:01, 24.32it/s] 75%|███████▌  | 83/110 [00:06<00:03,  8.21it/s] 79%|███████▉  | 87/110 [00:06<00:02,  8.22it/s] 82%|████████▏ | 90/110 [00:06<00:02,  9.07it/s] 93%|█████████▎| 102/110 [00:07<00:00, 15.91it/s] 96%|█████████▋| 106/110 [00:07<00:00, 16.75it/s]100%|██████████| 110/110 [00:07<00:00, 15.02it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:41:20.708955 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:41:39.994959 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 739962
+   Parameters : 145082
+   Iterations : 101
+         Time : 19.1174 [s]
+ Initial cost : 4.57323 [px]
+   Final cost : 0.599504 [px]
+  Termination : No convergence
+
+I20251204 23:41:39.995621 129155270464640 timer.cc:91] Elapsed time: 0.321 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 13
+3: Predicting tracks for query frame 24
+4: Predicting tracks for query frame 21
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 22
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 23
+9: Predicting tracks for query frame 3
+10: Predicting tracks for query frame 25
+Processing non visible frames: [37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 72, 75, 76, 77, 93, 94, 95, 97, 98, 99, 100, 101, 102]
+Processing non visible frames: [50, 51, 52, 53, 54, 55, 56, 57, 58, 72, 75, 76, 77, 93, 94, 95, 97, 98, 100, 101, 102]
+Processing non visible frames: [56, 57, 58, 72, 75, 76, 77, 93, 94, 95, 101, 102]
+Processing non visible frames: [72, 75, 76, 77]
+Processing non visible frames: [75, 76, 77]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/bridge/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      7.54s
+Run VGGT model:                 20.07s
+Track establishment:            90.11s
+Bundle adjustment:              21.21s
+Reconstruction (with BA):      111.32s
+Rescale reconstruction:          0.67s
+Save reconstruction:             0.45s
+------------------------------------------------------------
+TOTAL TIME:                    140.20s
+============================================================
+
+Processing eth3d_local - courtyard...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 38 images in /home/mattia/Desktop/datasets/eth3d/courtyard/images_by_k
+Loading 38 images...
+  0%|          | 0/38 [00:00<?, ?it/s]  3%|▎         | 1/38 [00:00<00:33,  1.10it/s] 21%|██        | 8/38 [00:01<00:02, 10.39it/s] 55%|█████▌    | 21/38 [00:01<00:01, 15.98it/s] 68%|██████▊   | 26/38 [00:01<00:00, 19.38it/s]100%|██████████| 38/38 [00:01<00:00, 20.83it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:42:18.619361 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:42:25.161542 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 1058252
+   Parameters : 162122
+   Iterations : 27
+         Time : 6.31094 [s]
+ Initial cost : 3.31786 [px]
+   Final cost : 0.461889 [px]
+  Termination : Convergence
+
+I20251204 23:42:25.161579 129155270464640 timer.cc:91] Elapsed time: 0.109 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 15
+3: Predicting tracks for query frame 1
+4: Predicting tracks for query frame 2
+5: Predicting tracks for query frame 8
+6: Predicting tracks for query frame 3
+7: Predicting tracks for query frame 9
+8: Predicting tracks for query frame 4
+9: Predicting tracks for query frame 10
+10: Predicting tracks for query frame 5
+Processing non visible frames: [25, 29]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/courtyard/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.92s
+Run VGGT model:                  3.90s
+Track establishment:            24.10s
+Bundle adjustment:               8.11s
+Reconstruction (with BA):       32.21s
+Rescale reconstruction:          0.94s
+Save reconstruction:             0.53s
+------------------------------------------------------------
+TOTAL TIME:                     39.65s
+============================================================
+
+Processing eth3d_local - delivery_area...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 44 images in /home/mattia/Desktop/datasets/eth3d/delivery_area/images_by_k
+Loading 44 images...
+  0%|          | 0/44 [00:00<?, ?it/s]  2%|▏         | 1/44 [00:00<00:34,  1.25it/s]  5%|▍         | 2/44 [00:00<00:16,  2.51it/s] 18%|█▊        | 8/44 [00:01<00:02, 12.50it/s] 43%|████▎     | 19/44 [00:01<00:00, 31.52it/s] 57%|█████▋    | 25/44 [00:01<00:01, 14.87it/s] 93%|█████████▎| 41/44 [00:02<00:00, 29.77it/s]100%|██████████| 44/44 [00:02<00:00, 19.23it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:43:06.487320 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:43:17.951308 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 381698
+   Parameters : 118121
+   Iterations : 101
+         Time : 11.3626 [s]
+ Initial cost : 3.91143 [px]
+   Final cost : 0.373552 [px]
+  Termination : No convergence
+
+I20251204 23:43:17.952068 129155270464640 timer.cc:91] Elapsed time: 0.191 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 24
+3: Predicting tracks for query frame 8
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 9
+6: Predicting tracks for query frame 2
+7: Predicting tracks for query frame 10
+8: Predicting tracks for query frame 3
+9: Predicting tracks for query frame 14
+10: Predicting tracks for query frame 16
+Processing non visible frames: [29, 30, 34, 35]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/delivery_area/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      2.37s
+Run VGGT model:                  5.22s
+Track establishment:            25.24s
+Bundle adjustment:              12.28s
+Reconstruction (with BA):       37.52s
+Rescale reconstruction:          0.35s
+Save reconstruction:             0.25s
+------------------------------------------------------------
+TOTAL TIME:                     45.87s
+============================================================
+
+Processing eth3d_local - door...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 7 images in /home/mattia/Desktop/datasets/eth3d/door/images_by_k
+Loading 7 images...
+  0%|          | 0/7 [00:00<?, ?it/s] 14%|█▍        | 1/7 [00:00<00:02,  2.28it/s]100%|██████████| 7/7 [00:00<00:00, 15.45it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:43:30.483237 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:43:36.383492 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 204814
+   Parameters : 68510
+   Iterations : 101
+         Time : 5.85038 [s]
+ Initial cost : 1.36411 [px]
+   Final cost : 0.19846 [px]
+  Termination : No convergence
+
+I20251204 23:43:36.383815 129155270464640 timer.cc:91] Elapsed time: 0.098 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 3
+3: Predicting tracks for query frame 1
+4: Predicting tracks for query frame 2
+5: Predicting tracks for query frame 4
+6: Predicting tracks for query frame 5
+7: Predicting tracks for query frame 6
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/door/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      0.47s
+Run VGGT model:                  1.14s
+Track establishment:             4.07s
+Bundle adjustment:               6.19s
+Reconstruction (with BA):       10.26s
+Rescale reconstruction:          0.18s
+Save reconstruction:             0.12s
+------------------------------------------------------------
+TOTAL TIME:                     12.31s
+============================================================
+
+Processing eth3d_local - electro...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 45 images in /home/mattia/Desktop/datasets/eth3d/electro/images_by_k
+Loading 45 images...
+  0%|          | 0/45 [00:00<?, ?it/s]  2%|▏         | 1/45 [00:00<00:38,  1.15it/s] 11%|█         | 5/45 [00:00<00:06,  6.60it/s] 33%|███▎      | 15/45 [00:01<00:01, 21.66it/s] 47%|████▋     | 21/45 [00:01<00:01, 14.74it/s] 56%|█████▌    | 25/45 [00:01<00:01, 15.47it/s] 91%|█████████ | 41/45 [00:02<00:00, 27.04it/s]100%|██████████| 45/45 [00:02<00:00, 19.69it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:44:11.503736 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:44:14.235082 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 412526
+   Parameters : 99041
+   Iterations : 29
+         Time : 2.62205 [s]
+ Initial cost : 2.78434 [px]
+   Final cost : 0.477136 [px]
+  Termination : Convergence
+
+I20251204 23:44:14.235114 129155270464640 timer.cc:91] Elapsed time: 0.046 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 24
+3: Predicting tracks for query frame 7
+4: Predicting tracks for query frame 4
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 3
+7: Predicting tracks for query frame 12
+8: Predicting tracks for query frame 5
+9: Predicting tracks for query frame 13
+10: Predicting tracks for query frame 6
+Processing non visible frames: [16, 17, 19, 20, 21, 40, 43, 44]
+Processing non visible frames: [19, 43, 44]
+Processing non visible frames: [43, 44]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/electro/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      2.37s
+Run VGGT model:                  5.44s
+Track establishment:            20.36s
+Bundle adjustment:               3.52s
+Reconstruction (with BA):       23.88s
+Rescale reconstruction:          0.37s
+Save reconstruction:             0.25s
+------------------------------------------------------------
+TOTAL TIME:                     32.46s
+============================================================
+
+Processing eth3d_local - exhibition_hall...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 68 images in /home/mattia/Desktop/datasets/eth3d/exhibition_hall/images_by_k
+Loading 68 images...
+  0%|          | 0/68 [00:00<?, ?it/s]  1%|▏         | 1/68 [00:00<00:57,  1.17it/s]  4%|▍         | 3/68 [00:00<00:16,  3.83it/s] 16%|█▌        | 11/68 [00:01<00:03, 16.63it/s] 31%|███       | 21/68 [00:01<00:02, 17.07it/s] 37%|███▋      | 25/68 [00:01<00:02, 17.37it/s] 49%|████▊     | 33/68 [00:01<00:01, 25.66it/s] 60%|██████    | 41/68 [00:02<00:00, 33.83it/s] 69%|██████▉   | 47/68 [00:02<00:01, 18.49it/s] 91%|█████████ | 62/68 [00:03<00:00, 26.48it/s]100%|██████████| 68/68 [00:03<00:00, 21.42it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:45:24.804783 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:45:35.991240 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 410640
+   Parameters : 139346
+   Iterations : 101
+         Time : 11.0662 [s]
+ Initial cost : 4.74342 [px]
+   Final cost : 0.374707 [px]
+  Termination : No convergence
+
+I20251204 23:45:35.992199 129155270464640 timer.cc:91] Elapsed time: 0.186 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 35
+3: Predicting tracks for query frame 36
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 37
+6: Predicting tracks for query frame 2
+7: Predicting tracks for query frame 38
+8: Predicting tracks for query frame 4
+9: Predicting tracks for query frame 39
+10: Predicting tracks for query frame 5
+Processing non visible frames: [7, 8, 9, 10, 11, 12, 13, 14, 25, 26, 27, 28, 29, 30, 31, 32, 61, 62, 63, 64, 67]
+Processing non visible frames: [10, 11, 12, 13, 14, 28, 29, 30, 31, 32, 67]
+Processing non visible frames: [13, 14, 31, 32, 67]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/exhibition_hall/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      3.29s
+Run VGGT model:                  9.23s
+Track establishment:            50.30s
+Bundle adjustment:              12.35s
+Reconstruction (with BA):       62.65s
+Rescale reconstruction:          0.37s
+Save reconstruction:             0.29s
+------------------------------------------------------------
+TOTAL TIME:                     75.98s
+============================================================
+
+Processing eth3d_local - facade...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 76 images in /home/mattia/Desktop/datasets/eth3d/facade/images_by_k
+Loading 76 images...
+  0%|          | 0/76 [00:00<?, ?it/s]  1%|▏         | 1/76 [00:00<01:00,  1.24it/s] 11%|█         | 8/76 [00:00<00:05, 11.48it/s] 28%|██▊       | 21/76 [00:01<00:04, 13.59it/s] 39%|███▉      | 30/76 [00:01<00:02, 20.77it/s] 54%|█████▍    | 41/76 [00:02<00:02, 16.35it/s] 71%|███████   | 54/76 [00:02<00:00, 25.05it/s] 80%|████████  | 61/76 [00:03<00:00, 20.86it/s] 87%|████████▋ | 66/76 [00:03<00:00, 23.39it/s]100%|██████████| 76/76 [00:03<00:00, 21.03it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:46:35.149189 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:47:03.375171 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 1023490
+   Parameters : 91076
+   Iterations : 101
+         Time : 27.9668 [s]
+ Initial cost : 2.99991 [px]
+   Final cost : 0.445667 [px]
+  Termination : No convergence
+
+I20251204 23:47:03.375736 129155270464640 timer.cc:91] Elapsed time: 0.470 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 36
+3: Predicting tracks for query frame 7
+4: Predicting tracks for query frame 68
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 75
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 5
+9: Predicting tracks for query frame 8
+10: Predicting tracks for query frame 10
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/facade/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      3.91s
+Run VGGT model:                 10.96s
+Track establishment:            36.02s
+Bundle adjustment:              29.86s
+Reconstruction (with BA):       65.88s
+Rescale reconstruction:          0.92s
+Save reconstruction:             0.50s
+------------------------------------------------------------
+TOTAL TIME:                     82.33s
+============================================================
+
+Processing eth3d_local - kicker...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 31 images in /home/mattia/Desktop/datasets/eth3d/kicker/images_by_k
+Loading 31 images...
+  0%|          | 0/31 [00:00<?, ?it/s]  3%|▎         | 1/31 [00:00<00:22,  1.32it/s]  6%|▋         | 2/31 [00:00<00:11,  2.45it/s] 35%|███▌      | 11/31 [00:01<00:01, 17.21it/s] 68%|██████▊   | 21/31 [00:01<00:00, 25.52it/s] 84%|████████▍ | 26/31 [00:01<00:00, 25.39it/s]100%|██████████| 31/31 [00:01<00:00, 19.87it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:47:30.598578 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+W20251204 23:47:37.070907 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:37.258127 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:37.445806 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:37.633385 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:37.705249 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.011198 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.082427 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.391405 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.462470 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.651678 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.842210 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:38.913644 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:39.228107 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:39.299461 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:39.614924 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:39.686422 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:39.874486 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:40.062276 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:40.253410 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:40.442799 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:40.514769 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:40.817752 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:40.889808 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:41.077240 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:41.264713 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:47:41.335498 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+I20251204 23:47:41.464426 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 432898
+   Parameters : 106409
+   Iterations : 101
+         Time : 10.7254 [s]
+ Initial cost : 2.98785 [px]
+   Final cost : 0.647144 [px]
+  Termination : No convergence
+
+I20251204 23:47:41.465092 129155270464640 timer.cc:91] Elapsed time: 0.181 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 7
+3: Predicting tracks for query frame 2
+4: Predicting tracks for query frame 12
+5: Predicting tracks for query frame 3
+6: Predicting tracks for query frame 26
+7: Predicting tracks for query frame 4
+8: Predicting tracks for query frame 1
+9: Predicting tracks for query frame 5
+10: Predicting tracks for query frame 10
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/kicker/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.62s
+Run VGGT model:                  2.97s
+Track establishment:            14.47s
+Bundle adjustment:              11.64s
+Reconstruction (with BA):       26.11s
+Rescale reconstruction:          0.38s
+Save reconstruction:             0.25s
+------------------------------------------------------------
+TOTAL TIME:                     31.49s
+============================================================
+
+Processing eth3d_local - lecture_room...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 23 images in /home/mattia/Desktop/datasets/eth3d/lecture_room/images_by_k
+Loading 23 images...
+  0%|          | 0/23 [00:00<?, ?it/s]  4%|▍         | 1/23 [00:00<00:20,  1.05it/s] 91%|█████████▏| 21/23 [00:01<00:00, 19.90it/s]100%|██████████| 23/23 [00:01<00:00, 17.11it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:48:02.832267 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+W20251204 23:48:05.167706 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.249334 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.298765 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.348064 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.398908 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.448942 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.499672 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.549462 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.568372 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.649166 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.668258 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.718449 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.799327 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:48:05.818260 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+I20251204 23:48:05.823692 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 102184
+   Parameters : 45215
+   Iterations : 101
+         Time : 2.96211 [s]
+ Initial cost : 4.55573 [px]
+   Final cost : 0.295809 [px]
+  Termination : No convergence
+
+I20251204 23:48:05.823880 129155270464640 timer.cc:91] Elapsed time: 0.050 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 18
+3: Predicting tracks for query frame 8
+4: Predicting tracks for query frame 9
+5: Predicting tracks for query frame 2
+6: Predicting tracks for query frame 7
+7: Predicting tracks for query frame 1
+8: Predicting tracks for query frame 10
+9: Predicting tracks for query frame 3
+10: Predicting tracks for query frame 11
+Processing non visible frames: [13, 14]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/lecture_room/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.38s
+Run VGGT model:                  2.00s
+Track establishment:            11.03s
+Bundle adjustment:               3.24s
+Reconstruction (with BA):       14.27s
+Rescale reconstruction:          0.09s
+Save reconstruction:             0.08s
+------------------------------------------------------------
+TOTAL TIME:                     17.98s
+============================================================
+
+Processing eth3d_local - living_room...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 65 images in /home/mattia/Desktop/datasets/eth3d/living_room/images_by_k
+Loading 65 images...
+  0%|          | 0/65 [00:00<?, ?it/s]  2%|▏         | 1/65 [00:00<00:57,  1.12it/s]  6%|▌         | 4/65 [00:01<00:12,  5.00it/s] 23%|██▎       | 15/65 [00:01<00:02, 21.24it/s] 32%|███▏      | 21/65 [00:01<00:03, 13.42it/s] 38%|███▊      | 25/65 [00:01<00:02, 16.03it/s] 52%|█████▏    | 34/65 [00:02<00:01, 25.57it/s] 63%|██████▎   | 41/65 [00:02<00:01, 15.94it/s] 72%|███████▏  | 47/65 [00:02<00:00, 20.09it/s] 94%|█████████▍| 61/65 [00:03<00:00, 26.36it/s]100%|██████████| 65/65 [00:03<00:00, 19.42it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:49:11.273873 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:49:26.378439 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 764456
+   Parameters : 157697
+   Iterations : 72
+         Time : 14.8827 [s]
+ Initial cost : 3.85581 [px]
+   Final cost : 0.567282 [px]
+  Termination : Convergence
+
+I20251204 23:49:26.378471 129155270464640 timer.cc:91] Elapsed time: 0.252 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 12
+3: Predicting tracks for query frame 5
+4: Predicting tracks for query frame 3
+5: Predicting tracks for query frame 6
+6: Predicting tracks for query frame 2
+7: Predicting tracks for query frame 7
+8: Predicting tracks for query frame 4
+9: Predicting tracks for query frame 9
+10: Predicting tracks for query frame 16
+Processing non visible frames: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 59, 60]
+Processing non visible frames: [33, 34, 35, 36, 37, 38, 39, 40, 59, 60]
+Processing non visible frames: [59, 60]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/living_room/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      3.45s
+Run VGGT model:                  8.86s
+Track establishment:            45.56s
+Bundle adjustment:              16.67s
+Reconstruction (with BA):       62.22s
+Rescale reconstruction:          0.68s
+Save reconstruction:             0.44s
+------------------------------------------------------------
+TOTAL TIME:                     75.81s
+============================================================
+
+Processing eth3d_local - lounge...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 10 images in /home/mattia/Desktop/datasets/eth3d/lounge/images_by_k
+Loading 10 images...
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:00<00:03,  2.49it/s] 90%|█████████ | 9/10 [00:00<00:00, 21.19it/s]100%|██████████| 10/10 [00:00<00:00, 18.21it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:49:42.094940 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:49:43.246960 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 163434
+   Parameters : 78422
+   Iterations : 21
+         Time : 1.10998 [s]
+ Initial cost : 1.93599 [px]
+   Final cost : 0.301676 [px]
+  Termination : Convergence
+
+I20251204 23:49:43.246995 129155270464640 timer.cc:91] Elapsed time: 0.019 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 1
+3: Predicting tracks for query frame 6
+4: Predicting tracks for query frame 3
+5: Predicting tracks for query frame 7
+6: Predicting tracks for query frame 2
+7: Predicting tracks for query frame 8
+8: Predicting tracks for query frame 4
+9: Predicting tracks for query frame 9
+10: Predicting tracks for query frame 5
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/lounge/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      0.64s
+Run VGGT model:                  0.78s
+Track establishment:             6.91s
+Bundle adjustment:               1.43s
+Reconstruction (with BA):        8.34s
+Rescale reconstruction:          0.15s
+Save reconstruction:             0.12s
+------------------------------------------------------------
+TOTAL TIME:                     10.19s
+============================================================
+
+Processing eth3d_local - meadow...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 15 images in /home/mattia/Desktop/datasets/eth3d/meadow/images_by_k
+Loading 15 images...
+  0%|          | 0/15 [00:00<?, ?it/s]  7%|▋         | 1/15 [00:00<00:06,  2.03it/s] 33%|███▎      | 5/15 [00:00<00:00, 10.49it/s]100%|██████████| 15/15 [00:00<00:00, 21.96it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:49:56.892612 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:49:59.329094 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 45862
+   Parameters : 26153
+   Iterations : 101
+         Time : 2.42102 [s]
+ Initial cost : 4.49731 [px]
+   Final cost : 0.325286 [px]
+  Termination : No convergence
+
+I20251204 23:49:59.329202 129155270464640 timer.cc:91] Elapsed time: 0.041 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 7
+3: Predicting tracks for query frame 1
+4: Predicting tracks for query frame 4
+5: Predicting tracks for query frame 2
+6: Predicting tracks for query frame 5
+7: Predicting tracks for query frame 3
+8: Predicting tracks for query frame 6
+9: Predicting tracks for query frame 8
+10: Predicting tracks for query frame 9
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/meadow/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      0.85s
+Run VGGT model:                  1.24s
+Track establishment:             5.29s
+Bundle adjustment:               2.54s
+Reconstruction (with BA):        7.83s
+Rescale reconstruction:          0.04s
+Save reconstruction:             0.05s
+------------------------------------------------------------
+TOTAL TIME:                     10.16s
+============================================================
+
+Processing eth3d_local - observatory...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 27 images in /home/mattia/Desktop/datasets/eth3d/observatory/images_by_k
+Loading 27 images...
+  0%|          | 0/27 [00:00<?, ?it/s]  4%|▎         | 1/27 [00:00<00:18,  1.38it/s] 19%|█▊        | 5/27 [00:00<00:03,  7.32it/s] 78%|███████▊  | 21/27 [00:01<00:00, 23.22it/s]100%|██████████| 27/27 [00:01<00:00, 20.92it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:50:21.630416 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:50:30.385307 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 903086
+   Parameters : 91955
+   Iterations : 35
+         Time : 8.52819 [s]
+ Initial cost : 2.79757 [px]
+   Final cost : 0.493755 [px]
+  Termination : Convergence
+
+I20251204 23:50:30.385911 129155270464640 timer.cc:91] Elapsed time: 0.146 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 9
+3: Predicting tracks for query frame 14
+4: Predicting tracks for query frame 26
+5: Predicting tracks for query frame 15
+6: Predicting tracks for query frame 1
+7: Predicting tracks for query frame 16
+8: Predicting tracks for query frame 2
+9: Predicting tracks for query frame 17
+10: Predicting tracks for query frame 3
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/observatory/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.53s
+Run VGGT model:                  2.82s
+Track establishment:            10.88s
+Bundle adjustment:               9.95s
+Reconstruction (with BA):       20.82s
+Rescale reconstruction:          0.80s
+Save reconstruction:             0.41s
+------------------------------------------------------------
+TOTAL TIME:                     26.54s
+============================================================
+
+Processing eth3d_local - office...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 26 images in /home/mattia/Desktop/datasets/eth3d/office/images_by_k
+Loading 26 images...
+  0%|          | 0/26 [00:00<?, ?it/s]  4%|▍         | 1/26 [00:00<00:24,  1.04it/s] 69%|██████▉   | 18/26 [00:01<00:00, 22.81it/s]100%|██████████| 26/26 [00:01<00:00, 18.02it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:50:50.467111 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:50:55.934683 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 264182
+   Parameters : 64286
+   Iterations : 74
+         Time : 5.39948 [s]
+ Initial cost : 2.12341 [px]
+   Final cost : 0.540243 [px]
+  Termination : Convergence
+
+I20251204 23:50:55.935036 129155270464640 timer.cc:91] Elapsed time: 0.091 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 6
+3: Predicting tracks for query frame 4
+4: Predicting tracks for query frame 5
+5: Predicting tracks for query frame 10
+6: Predicting tracks for query frame 1
+7: Predicting tracks for query frame 8
+8: Predicting tracks for query frame 16
+9: Predicting tracks for query frame 9
+10: Predicting tracks for query frame 17
+Processing non visible frames: [13]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/office/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.53s
+Run VGGT model:                  2.29s
+Track establishment:             8.52s
+Bundle adjustment:               5.90s
+Reconstruction (with BA):       14.42s
+Rescale reconstruction:          0.24s
+Save reconstruction:             0.16s
+------------------------------------------------------------
+TOTAL TIME:                     18.79s
+============================================================
+
+Processing eth3d_local - old_computer...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 54 images in /home/mattia/Desktop/datasets/eth3d/old_computer/images_by_k
+Loading 54 images...
+  0%|          | 0/54 [00:00<?, ?it/s]  2%|▏         | 1/54 [00:00<00:33,  1.59it/s]  6%|▌         | 3/54 [00:00<00:10,  4.67it/s] 24%|██▍       | 13/54 [00:00<00:01, 23.16it/s] 39%|███▉      | 21/54 [00:01<00:01, 16.90it/s] 46%|████▋     | 25/54 [00:01<00:01, 17.61it/s] 70%|███████   | 38/54 [00:01<00:00, 33.04it/s] 83%|████████▎ | 45/54 [00:02<00:00, 24.82it/s] 93%|█████████▎| 50/54 [00:02<00:00, 28.06it/s]100%|██████████| 54/54 [00:02<00:00, 22.85it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:51:31.434949 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:51:39.694927 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 300442
+   Parameters : 80054
+   Iterations : 101
+         Time : 8.18024 [s]
+ Initial cost : 5.3452 [px]
+   Final cost : 0.399027 [px]
+  Termination : No convergence
+
+I20251204 23:51:39.695381 129155270464640 timer.cc:91] Elapsed time: 0.138 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 28
+3: Predicting tracks for query frame 20
+4: Predicting tracks for query frame 19
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 21
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 22
+9: Predicting tracks for query frame 8
+10: Predicting tracks for query frame 52
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/old_computer/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      2.64s
+Run VGGT model:                  6.50s
+Track establishment:            19.39s
+Bundle adjustment:               8.90s
+Reconstruction (with BA):       28.29s
+Rescale reconstruction:          0.27s
+Save reconstruction:             0.22s
+------------------------------------------------------------
+TOTAL TIME:                     38.10s
+============================================================
+
+Processing eth3d_local - pipes...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 14 images in /home/mattia/Desktop/datasets/eth3d/pipes/images_by_k
+Loading 14 images...
+  0%|          | 0/14 [00:00<?, ?it/s]  7%|▋         | 1/14 [00:00<00:06,  2.12it/s] 64%|██████▍   | 9/14 [00:00<00:00, 19.58it/s]100%|██████████| 14/14 [00:00<00:00, 22.05it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:51:56.589602 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:51:58.865904 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 300540
+   Parameters : 109754
+   Iterations : 23
+         Time : 2.19597 [s]
+ Initial cost : 2.50959 [px]
+   Final cost : 0.428827 [px]
+  Termination : Convergence
+
+I20251204 23:51:58.865935 129155270464640 timer.cc:91] Elapsed time: 0.038 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 8
+3: Predicting tracks for query frame 3
+4: Predicting tracks for query frame 4
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 5
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 6
+9: Predicting tracks for query frame 9
+10: Predicting tracks for query frame 7
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/pipes/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      0.75s
+Run VGGT model:                  1.13s
+Track establishment:             8.12s
+Bundle adjustment:               2.77s
+Reconstruction (with BA):       10.90s
+Rescale reconstruction:          0.28s
+Save reconstruction:             0.20s
+------------------------------------------------------------
+TOTAL TIME:                     13.40s
+============================================================
+
+Processing eth3d_local - playground...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 38 images in /home/mattia/Desktop/datasets/eth3d/playground/images_by_k
+Loading 38 images...
+  0%|          | 0/38 [00:00<?, ?it/s]  3%|▎         | 1/38 [00:00<00:36,  1.02it/s] 21%|██        | 8/38 [00:01<00:03,  9.48it/s] 55%|█████▌    | 21/38 [00:01<00:01, 16.23it/s] 63%|██████▎   | 24/38 [00:01<00:00, 16.46it/s] 95%|█████████▍| 36/38 [00:01<00:00, 29.59it/s]100%|██████████| 38/38 [00:01<00:00, 19.23it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:52:34.881194 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+W20251204 23:52:40.146938 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:52:40.499839 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+I20251204 23:52:40.577907 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 262690
+   Parameters : 103025
+   Iterations : 87
+         Time : 5.61938 [s]
+ Initial cost : 3.29421 [px]
+   Final cost : 0.503166 [px]
+  Termination : Convergence
+
+I20251204 23:52:40.578715 129155270464640 timer.cc:91] Elapsed time: 0.095 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 20
+3: Predicting tracks for query frame 15
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 13
+6: Predicting tracks for query frame 16
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 17
+9: Predicting tracks for query frame 3
+10: Predicting tracks for query frame 18
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/playground/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      2.04s
+Run VGGT model:                  3.82s
+Track establishment:            23.09s
+Bundle adjustment:               6.36s
+Reconstruction (with BA):       29.45s
+Rescale reconstruction:          0.25s
+Save reconstruction:             0.19s
+------------------------------------------------------------
+TOTAL TIME:                     35.92s
+============================================================
+
+Processing eth3d_local - relief...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 31 images in /home/mattia/Desktop/datasets/eth3d/relief/images_by_k
+Loading 31 images...
+  0%|          | 0/31 [00:00<?, ?it/s]  3%|▎         | 1/31 [00:00<00:28,  1.05it/s] 19%|█▉        | 6/31 [00:01<00:03,  7.37it/s] 68%|██████▊   | 21/31 [00:01<00:00, 19.52it/s] 94%|█████████▎| 29/31 [00:01<00:00, 25.62it/s]100%|██████████| 31/31 [00:01<00:00, 18.85it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:53:09.444377 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:53:12.929296 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 701452
+   Parameters : 128270
+   Iterations : 15
+         Time : 3.30012 [s]
+ Initial cost : 3.79663 [px]
+   Final cost : 0.434242 [px]
+  Termination : Convergence
+
+I20251204 23:53:12.929333 129155270464640 timer.cc:91] Elapsed time: 0.058 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 12
+3: Predicting tracks for query frame 18
+4: Predicting tracks for query frame 19
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 20
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 14
+9: Predicting tracks for query frame 5
+10: Predicting tracks for query frame 15
+Processing non visible frames: [28, 29, 30]
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/relief/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.70s
+Run VGGT model:                  2.92s
+Track establishment:            16.81s
+Bundle adjustment:               4.56s
+Reconstruction (with BA):       21.37s
+Rescale reconstruction:          0.63s
+Save reconstruction:             0.37s
+------------------------------------------------------------
+TOTAL TIME:                     27.13s
+============================================================
+
+Processing eth3d_local - relief_2...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 31 images in /home/mattia/Desktop/datasets/eth3d/relief_2/images_by_k
+Loading 31 images...
+  0%|          | 0/31 [00:00<?, ?it/s]  3%|▎         | 1/31 [00:00<00:28,  1.05it/s] 26%|██▌       | 8/31 [00:01<00:02, 10.01it/s] 68%|██████▊   | 21/31 [00:01<00:00, 19.61it/s] 94%|█████████▎| 29/31 [00:01<00:00, 25.83it/s]100%|██████████| 31/31 [00:01<00:00, 19.21it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:53:38.373416 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+W20251204 23:53:39.943431 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.102790 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.261646 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.320669 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.477341 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.634648 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.792243 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:40.851158 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.107294 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.166554 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.424400 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.483500 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.743311 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.802969 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:41.959936 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.118884 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.275915 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.433677 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.493131 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.650743 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.806754 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:42.865880 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.121811 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.180651 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.440145 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.499896 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.657004 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.813401 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:43.873150 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:44.128692 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:44.188071 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:44.444962 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:44.504422 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:44.761736 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:44.821155 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.078925 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.138285 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.296359 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.454913 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.611296 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.769074 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:45.830732 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:46.096699 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:46.155534 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:46.313805 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:46.471310 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+W20251204 23:53:46.530800 129155270464640 levenberg_marquardt_strategy.cc:115] Linear solver failure. Failed to compute a step: Eigen failure. Unable to perform dense Cholesky factorization.
+I20251204 23:53:46.739137 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 371726
+   Parameters : 105452
+   Iterations : 101
+         Time : 8.26427 [s]
+ Initial cost : 4.37289 [px]
+   Final cost : 0.423746 [px]
+  Termination : No convergence
+
+I20251204 23:53:46.739837 129155270464640 timer.cc:91] Elapsed time: 0.139 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 29
+3: Predicting tracks for query frame 13
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 12
+6: Predicting tracks for query frame 2
+7: Predicting tracks for query frame 14
+8: Predicting tracks for query frame 3
+9: Predicting tracks for query frame 15
+10: Predicting tracks for query frame 4
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/relief_2/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.68s
+Run VGGT model:                  2.90s
+Track establishment:            13.25s
+Bundle adjustment:               9.04s
+Reconstruction (with BA):       22.29s
+Rescale reconstruction:          0.33s
+Save reconstruction:             0.23s
+------------------------------------------------------------
+TOTAL TIME:                     27.58s
+============================================================
+
+Processing eth3d_local - statue...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 11 images in /home/mattia/Desktop/datasets/eth3d/statue/images_by_k
+Loading 11 images...
+  0%|          | 0/11 [00:00<?, ?it/s]  9%|▉         | 1/11 [00:00<00:03,  2.58it/s] 82%|████████▏ | 9/11 [00:00<00:00, 21.47it/s]100%|██████████| 11/11 [00:00<00:00, 20.33it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:53:59.142042 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:54:00.732386 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 218636
+   Parameters : 60881
+   Iterations : 26
+         Time : 1.53171 [s]
+ Initial cost : 2.96256 [px]
+   Final cost : 0.389173 [px]
+  Termination : Convergence
+
+I20251204 23:54:00.732418 129155270464640 timer.cc:91] Elapsed time: 0.027 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 5
+3: Predicting tracks for query frame 1
+4: Predicting tracks for query frame 2
+5: Predicting tracks for query frame 3
+6: Predicting tracks for query frame 4
+7: Predicting tracks for query frame 6
+8: Predicting tracks for query frame 7
+9: Predicting tracks for query frame 8
+10: Predicting tracks for query frame 9
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/statue/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      0.68s
+Run VGGT model:                  0.87s
+Track establishment:             4.00s
+Bundle adjustment:               1.92s
+Reconstruction (with BA):        5.92s
+Rescale reconstruction:          0.19s
+Save reconstruction:             0.13s
+------------------------------------------------------------
+TOTAL TIME:                      7.94s
+============================================================
+
+Processing eth3d_local - terrace...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 23 images in /home/mattia/Desktop/datasets/eth3d/terrace/images_by_k
+Loading 23 images...
+  0%|          | 0/23 [00:00<?, ?it/s]  4%|▍         | 1/23 [00:01<00:24,  1.11s/it] 70%|██████▉   | 16/23 [00:01<00:00, 17.78it/s]100%|██████████| 23/23 [00:01<00:00, 14.83it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:54:20.724868 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:54:21.942231 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 329358
+   Parameters : 99950
+   Iterations : 14
+         Time : 1.1245 [s]
+ Initial cost : 3.19501 [px]
+   Final cost : 0.377781 [px]
+  Termination : Convergence
+
+I20251204 23:54:21.942265 129155270464640 timer.cc:91] Elapsed time: 0.020 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 13
+3: Predicting tracks for query frame 1
+4: Predicting tracks for query frame 2
+5: Predicting tracks for query frame 6
+6: Predicting tracks for query frame 5
+7: Predicting tracks for query frame 22
+8: Predicting tracks for query frame 3
+9: Predicting tracks for query frame 4
+10: Predicting tracks for query frame 16
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/terrace/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      1.61s
+Run VGGT model:                  1.95s
+Track establishment:             9.58s
+Bundle adjustment:               1.78s
+Reconstruction (with BA):       11.37s
+Rescale reconstruction:          0.30s
+Save reconstruction:             0.20s
+------------------------------------------------------------
+TOTAL TIME:                     15.58s
+============================================================
+
+Processing eth3d_local - terrace_2...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 13 images in /home/mattia/Desktop/datasets/eth3d/terrace_2/images_by_k
+Loading 13 images...
+  0%|          | 0/13 [00:00<?, ?it/s]  8%|▊         | 1/13 [00:00<00:06,  1.86it/s] 62%|██████▏   | 8/13 [00:00<00:00, 15.74it/s]100%|██████████| 13/13 [00:00<00:00, 18.77it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:54:38.498283 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:54:49.384491 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 463628
+   Parameters : 102035
+   Iterations : 76
+         Time : 10.7627 [s]
+ Initial cost : 1.38956 [px]
+   Final cost : 0.337341 [px]
+  Termination : Convergence
+
+I20251204 23:54:49.385296 129155270464640 timer.cc:91] Elapsed time: 0.181 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 4
+3: Predicting tracks for query frame 12
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 5
+6: Predicting tracks for query frame 2
+7: Predicting tracks for query frame 6
+8: Predicting tracks for query frame 8
+9: Predicting tracks for query frame 3
+10: Predicting tracks for query frame 9
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/terrace_2/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      0.72s
+Run VGGT model:                  1.06s
+Track establishment:             7.49s
+Bundle adjustment:              11.56s
+Reconstruction (with BA):       19.05s
+Rescale reconstruction:          0.41s
+Save reconstruction:             0.25s
+------------------------------------------------------------
+TOTAL TIME:                     21.63s
+============================================================
+
+Processing eth3d_local - terrains...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 42 images in /home/mattia/Desktop/datasets/eth3d/terrains/images_by_k
+Loading 42 images...
+  0%|          | 0/42 [00:00<?, ?it/s]  2%|▏         | 1/42 [00:00<00:38,  1.06it/s] 14%|█▍        | 6/42 [00:01<00:04,  7.37it/s] 38%|███▊      | 16/42 [00:01<00:01, 21.43it/s] 52%|█████▏    | 22/42 [00:01<00:01, 14.01it/s] 64%|██████▍   | 27/42 [00:01<00:00, 17.85it/s] 98%|█████████▊| 41/42 [00:02<00:00, 28.97it/s]100%|██████████| 42/42 [00:02<00:00, 19.07it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+I20251204 23:55:25.776663 129155270464640 misc.cc:44] 
+==============================================================================
+Global bundle adjustment
+==============================================================================
+I20251204 23:55:33.234693 129155270464640 bundle_adjustment.cc:1163] Bundle adjustment report
+    Residuals : 281644
+   Parameters : 59687
+   Iterations : 101
+         Time : 7.38364 [s]
+ Initial cost : 3.36059 [px]
+   Final cost : 0.473768 [px]
+  Termination : No convergence
+
+I20251204 23:55:33.235003 129155270464640 timer.cc:91] Elapsed time: 0.124 [minutes]
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 8
+3: Predicting tracks for query frame 30
+4: Predicting tracks for query frame 24
+5: Predicting tracks for query frame 1
+6: Predicting tracks for query frame 25
+7: Predicting tracks for query frame 2
+8: Predicting tracks for query frame 26
+9: Predicting tracks for query frame 3
+10: Predicting tracks for query frame 27
+Grouping frames by camera name
+Saving depth maps...
+Reconstruction saved to /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/eth3d/terrains/sparse
+
+============================================================
+TIMING SUMMARY
+============================================================
+Find and sample images:          0.00s
+Load and preprocess images:      2.28s
+Run VGGT model:                  4.52s
+Track establishment:            22.23s
+Bundle adjustment:               8.06s
+Reconstruction (with BA):       30.29s
+Rescale reconstruction:          0.25s
+Save reconstruction:             0.18s
+------------------------------------------------------------
+TOTAL TIME:                     37.68s
+============================================================
+
+Output path /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/terrasky3D/graz_church/sparse already exists, skipping...
+Output path /home/mattia/Desktop/Repos/batchsfm/benchmarks/vggt_ba/terrasky3D/graz_main_square/sparse already exists, skipping...
+Processing terrasky3D_local - graz_townhall...
+VGGT model loaded successfully
+VGGTWrapper initialized on cuda:0 with dtype torch.bfloat16
+Found 150 images in /home/mattia/Desktop/datasets/terrasky3D/graz_townhall/images_150
+Loading 150 images...
+  0%|          | 0/150 [00:00<?, ?it/s]  1%|          | 1/150 [00:00<00:43,  3.41it/s] 14%|█▍        | 21/150 [00:00<00:03, 38.30it/s] 23%|██▎       | 35/150 [00:00<00:01, 58.94it/s] 29%|██▉       | 44/150 [00:01<00:02, 46.51it/s] 40%|████      | 60/150 [00:01<00:01, 67.39it/s] 47%|████▋     | 70/150 [00:01<00:01, 55.01it/s] 56%|█████▌    | 84/150 [00:01<00:01, 55.53it/s] 66%|██████▌   | 99/150 [00:01<00:00, 69.23it/s] 72%|███████▏  | 108/150 [00:01<00:00, 59.24it/s] 78%|███████▊  | 117/150 [00:02<00:00, 64.36it/s] 86%|████████▌ | 129/150 [00:02<00:00, 69.96it/s] 91%|█████████▏| 137/150 [00:02<00:00, 62.08it/s]100%|██████████| 150/150 [00:02<00:00, 61.30it/s]
+Using cache found in /home/mattia/.cache/torch/hub/facebookresearch_dinov2_main
+Running VGGT model...
+OOM-safe mode enabled: freeing VGGT model from memory...
+Running reconstruction with Bundle Adjustment...
+1: Predicting tracks for query frame 0
+2: Predicting tracks for query frame 124
+3: Predicting tracks for query frame 16
+4: Predicting tracks for query frame 1
+5: Predicting tracks for query frame 17
+6: Predicting tracks for query frame 2
+Traceback (most recent call last):
+  File "/home/mattia/Desktop/Repos/vggt/run_for_dataset.py", line 88, in <module>
+    _ = vggt.forward(
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/mattia/Desktop/Repos/vggt/vggt/wrapper.py", line 443, in forward
+    self._reconstruct_with_ba(
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/mattia/Desktop/Repos/vggt/vggt/wrapper.py", line 219, in _reconstruct_with_ba
+    predict_tracks(
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/track_predict.py", line 87, in predict_tracks
+    pred_track, pred_vis, pred_conf, pred_point_3d, pred_color = _forward_on_query(
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/track_predict.py", line 235, in _forward_on_query
+    pred_track, pred_vis, _ = predict_tracks_in_chunks(
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/vggsfm_utils.py", line 289, in predict_tracks_in_chunks
+    fine_pred_track, _, pred_vis, pred_score = track_predictor(
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/vggsfm_tracker.py", line 84, in forward
+    coarse_pred_track_lists, pred_vis = self.coarse_predictor(
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/track_modules/base_track_predictor.py", line 117, in forward
+    fcorrs = fcorr_fn.sample(coords)  # B, S, N, corrdim
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/track_modules/blocks.py", line 301, in sample
+    corrs = bilinear_sampler(corrs.reshape(B * S * N, 1, H, W), coords_lvl, padding_mode=self.padding_mode)
+  File "/home/mattia/Desktop/Repos/vggt/vggt/dependency/track_modules/utils.py", line 183, in bilinear_sampler
+    return F.grid_sample(input, coords, align_corners=align_corners, padding_mode=padding_mode)
+  File "/home/mattia/miniconda3/envs/keypoint_factory/lib/python3.10/site-packages/torch/nn/functional.py", line 4351, in grid_sample
+    return torch.grid_sampler(input, grid, mode_enum, padding_mode_enum, align_corners)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.60 GiB. GPU 

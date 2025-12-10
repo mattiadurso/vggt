@@ -149,3 +149,6 @@ skyseg.onnx
 *.egg-info
 .vscode/launch.json
 .vscode/settings.json
+run_for_dataset.py
+wrapper_output/*
+ba_increasing/*
