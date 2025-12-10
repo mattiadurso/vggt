@@ -152,3 +152,4 @@ skyseg.onnx
 run_for_dataset.py
 wrapper_output/*
 ba_increasing/*
+temp/*
