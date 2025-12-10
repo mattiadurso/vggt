@@ -99,7 +99,8 @@ for dataset in [
             output_path,
             max_images=-1,
             use_ba=use_ba,
-            query_frame_num=10,  # max 10
-            max_query_pts=2048,
+            query_frame_num=int(num_images / 3),  # max 10
+            max_query_pts=4096,
+            fine_tracking=True,
             shared_camera=True,  # per folder, in my datasets usually true
         )
