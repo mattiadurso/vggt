@@ -492,7 +492,7 @@ class VGGTWrapper:
             # output_path = output_path + "_ba" if use_ba else output_path
             os.makedirs(output_path, exist_ok=True)
             for image in reconstruction.images.values():
-                print(image)
+                print(image.world_from_camera)
             reconstruction.write_text(output_path)
 
             if save_depth:  # save depths as h5
