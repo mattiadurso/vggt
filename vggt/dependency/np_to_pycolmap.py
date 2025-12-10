@@ -375,6 +375,7 @@ def batch_np_matrix_to_pycolmap_wo_track(
 
         # add image
         reconstruction.add_image(image)
+        print("current images num", len(reconstruction.images))
 
     return reconstruction
 
