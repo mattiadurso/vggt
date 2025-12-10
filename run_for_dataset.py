@@ -47,7 +47,7 @@ paths = {
     },
 }
 
-use_ba = False
+use_ba = True
 cuda_id = 6
 
 for dataset in [
