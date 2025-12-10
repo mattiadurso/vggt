@@ -48,7 +48,7 @@ paths = {
 }
 
 use_ba = False
-cuda_id = 7
+cuda_id = 6
 
 for dataset in [
     # "terrasky3D_local",

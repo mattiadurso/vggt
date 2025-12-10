@@ -483,7 +483,7 @@ class VGGTWrapper:
                 original_coords.cpu().numpy(),
                 recon_resolution,
                 shift_point2d=use_ba,
-                shared_camera=shared_camera if use_ba else False,
+                shared_camera=shared_camera,
             )
             timings["rescale_reconstruction"] = time.time() - t_start
 
@@ -495,7 +495,6 @@ class VGGTWrapper:
                 print(image.cam_from_world)
 
             reconstruction.write_text(output_path)
-            reconstruction.write(output_path)
 
             if save_depth:  # save depths as h5
                 print("Saving depth maps...")
