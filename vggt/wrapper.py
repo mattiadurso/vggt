@@ -199,6 +199,7 @@ class VGGTWrapper:
         shared_camera: bool,
         camera_type: str,
         fine_tracking: bool,
+        image_names: Optional[List[str]] = None,
     ):
         """Reconstruct with bundle adjustment."""
         image_size = np.array(images.shape[-2:])
@@ -246,6 +247,7 @@ class VGGTWrapper:
             shared_camera=shared_camera,
             camera_type=camera_type,
             points_rgb=points_rgb,
+            image_names=image_names,
         )
 
         if reconstruction is None:
@@ -320,14 +322,16 @@ class VGGTWrapper:
         shared_camera: bool,
     ):
         """Rescale and rename reconstruction to match original images."""
-        rescale_camera = True
+        rescale_camera = {
+            camera_id: True for camera_id in reconstruction.cameras.keys()
+        }  # rescale all cameras but only once each
 
         for pyimageid in reconstruction.images:
             pyimage = reconstruction.images[pyimageid]
             pycamera = reconstruction.cameras[pyimage.camera_id]
             pyimage.name = base_image_paths[pyimageid - 1]
 
-            if rescale_camera:
+            if rescale_camera[pyimage.camera_id]:
                 pred_params = copy.deepcopy(pycamera.params)
                 real_image_size = original_coords[pyimageid - 1, -2:]
                 resize_ratio = max(real_image_size) / img_size
@@ -345,7 +349,7 @@ class VGGTWrapper:
                     point2D.xy = (point2D.xy - top_left) * resize_ratio
 
             if shared_camera:
-                rescale_camera = False
+                rescale_camera[pyimage.camera_id] = False
 
         return reconstruction
 
@@ -450,6 +454,7 @@ class VGGTWrapper:
                     shared_camera,
                     camera_type,
                     fine_tracking,
+                    image_names=base_image_paths,
                 )
             )
             timings["track_establishment"] = track_time
@@ -493,13 +498,16 @@ class VGGTWrapper:
                 depth_output_path = os.path.join(output_path, "depth_maps")
 
                 for i, img_path in enumerate(base_image_paths):
+                    conf_depth_map_i = depth_conf[i].squeeze()
                     depth_map_i = depth_map[i].squeeze()
+
                     depth_file_name = img_path.split(".")[0] + ".h5"
                     depth_file_path = os.path.join(depth_output_path, depth_file_name)
                     os.makedirs(os.path.dirname(depth_file_path), exist_ok=True)
 
                     with h5py.File(depth_file_path, "w") as hf:
                         hf.create_dataset("depth", data=depth_map_i)
+                        hf.create_dataset("confidence", data=conf_depth_map_i)
 
             timings["save_reconstruction"] = time.time() - t_start
 
@@ -592,6 +600,9 @@ if __name__ == "__main__":
 
     from vggt.wrapper import VGGTWrapper
 
+    # print("Hardcoded BA")
+    # args.use_ba = True
+
     vggt = VGGTWrapper(cuda_id=args.cuda_id, oom_safe=args.use_ba)
 
     # setting paths
@@ -629,16 +640,15 @@ if __name__ == "__main__":
     # reconstruction
     # scene = args.scene
     scene = "vienna_state_opera"
-    input = f"/home/mattia/Desktop/datasets/mydataset/data/{scene}/frames"
-    base_path = "/home/mattia/Desktop/Repos/wrapper_factory"
-    output = f"/home/mattia/Desktop/Repos/vggt/ba_increasing/{scene}_qf_{query_frames}"
+    input = f"/home/mattia/Desktop/datasets/mydataset/data_test/{scene}/frames"
+    output = f"/home/mattia/Desktop/Repos/vggt/wrapper_output/{scene}"
 
     rec = vggt.forward(
         input,
         output,
         max_images=args.max_images,
         use_ba=args.use_ba,
-        query_frame_num=8,
+        query_frame_num=2,
         fine_tracking=False,
-        shared_camera=False,
+        shared_camera=True,
     )
