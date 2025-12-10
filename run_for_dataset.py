@@ -65,7 +65,7 @@ for dataset in [
     base_path = paths[dataset]["base_path"]
     images_path = paths[dataset]["images_path"]  # I might have files in that path
     output_folder = paths[dataset]["output_path"]
-    scenes = ["vienna_state_opera"]  # sorted(os.listdir(f"{base_path}"))
+    scenes = sorted(os.listdir(f"{base_path}"))
 
     if not use_ba:
         vggt = VGGTWrapper(cuda_id=cuda_id)

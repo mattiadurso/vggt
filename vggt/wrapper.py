@@ -491,9 +491,6 @@ class VGGTWrapper:
             t_start = time.time()
 
             os.makedirs(output_path, exist_ok=True)
-            for image in reconstruction.images.values():
-                print(image.cam_from_world)
-
             reconstruction.write_text(output_path)
 
             if save_depth:  # save depths as h5
