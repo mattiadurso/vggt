@@ -32,7 +32,8 @@ paths = {
     "terrasky3D_local": {
         "base_path": "/home/mattia/Desktop/datasets/terrasky3D",
         "images_path": "images_150",
-        "output_path": "/home/mattia/Desktop/Repos/batchsfm/benchmark",
+        # "output_path": "/home/mattia/Desktop/Repos/batchsfm/benchmark",
+        "output_path": "/home/mattia/Desktop/Repos/vggt/temp",
     },
     "terrasky3D_orochi": {
         "base_path": "/data/mdurso/terrasky3d",
@@ -58,11 +59,13 @@ for dataset in [
     # "synth_local",
 ]:
 
+    cuda_id = 0 if "local" in dataset else cuda_id
+
     _ba = "_ba" if use_ba else ""
     base_path = paths[dataset]["base_path"]
     images_path = paths[dataset]["images_path"]  # I might have files in that path
     output_folder = paths[dataset]["output_path"]
-    scenes = sorted(os.listdir(f"{base_path}"))
+    scenes = ["vienna_state_opera"]  # sorted(os.listdir(f"{base_path}"))
 
     if not use_ba:
         vggt = VGGTWrapper(cuda_id=cuda_id)
