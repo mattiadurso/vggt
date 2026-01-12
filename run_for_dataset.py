@@ -74,7 +74,7 @@ paths = {
 
 cuda_id = 0
 
-for use_ba in [False, True]:
+for use_ba in [True]:
     for dataset in [
         "mipnerf360_orochi",
         "terrasky3D_orochi",
@@ -88,7 +88,7 @@ for use_ba in [False, True]:
         images_path = paths[dataset]["images_path"]  # I might have files in that path
         output_folder = paths[dataset]["output_path"]
 
-        scenes = ["graz_townhall"]  # sorted(os.listdir(f"{base_path}"))
+        scenes = sorted(os.listdir(f"{base_path}"))
 
         if not use_ba:
             vggt = VGGTWrapper(cuda_id=cuda_id)
