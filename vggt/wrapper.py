@@ -253,10 +253,11 @@ class VGGTWrapper:
         if reconstruction is None:
             return None, None, track_time, 0.0
 
-        ba_options = pycolmap.BundleAdjustmentOptions()
-        ba_options.refine_principal_point = True
+        # ba_options = pycolmap.BundleAdjustmentOptions()
+        # ba_options.refine_principal_point = True
+        # pycolmap.bundle_adjustment(reconstruction, ba_options)
+        print("Bundle adjustment skipped (run it later from CLI.)")
 
-        pycolmap.bundle_adjustment(reconstruction, ba_options)
         ba_time = time.time() - t_ba_start
 
         reconstruction_resolution = self.img_load_resolution
