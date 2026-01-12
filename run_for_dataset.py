@@ -72,7 +72,7 @@ paths = {
     },
 }
 
-cuda_id = 0
+cuda_id = 1
 
 for use_ba in [True]:
     for dataset in [
@@ -122,8 +122,8 @@ for use_ba in [True]:
                 output_path,
                 max_images=-1,
                 use_ba=use_ba,
-                query_frame_num=10,  # int(num_images / 3),  # max 10
-                max_query_pts=2048,
+                query_frame_num=10,  # 10 (or 8)
+                max_query_pts=2048,  # // 2,
                 fine_tracking=True,
                 shared_camera=True,  # per folder, in my datasets usually true
             )
