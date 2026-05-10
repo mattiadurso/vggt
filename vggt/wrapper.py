@@ -371,7 +371,7 @@ class VGGTWrapper:
         max_query_pts: int = 4096,
         fine_tracking: bool = False,
         # Non-BA parameters
-        conf_thres_value: float = 5.0,
+        conf_thres_value: float = 2.5,
         max_points_for_colmap: int = 100_000,
     ):
         """
